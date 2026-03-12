@@ -30,7 +30,7 @@ This will be a monorepo set up with submodules to pull in:
 - Modern Linux 7.0 mainline kernel (with minor device tree and driver patches)
 - Modern Ubuntu 22.04/24.04 userspace
 - Full USB Gadget support
-- Full USB device support
+- Full USB Host support
 - Support for Duo S Ethernet
 
 ## Missing Features
