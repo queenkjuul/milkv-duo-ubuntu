@@ -1,4 +1,4 @@
-# Ubuntu on the Milk-V Duo S
+# Ubuntu on the Milk-V Duo S RISC-V
 New and Improved for 2026!
 
 <img width="1280" height="836" alt="image" src="https://github.com/user-attachments/assets/6a2d1765-dc41-4cb2-b000-97cf976d3f32" />
@@ -26,7 +26,7 @@ This will be a monorepo set up with submodules to pull in:
 - 3 USB modes, selectable via systemd service:
   - USB Host: Use the USB A port to access peripheral devices
   - USB Serial (ACM): Connect to a PC with USB-C and log in over serial
-  - USB Network (CDC-NCM) [formerly RNDIS]: Connect to a PC with USB-C and log in over SSH or otherwise access over network protocols
+  - USB Network (CDC-NCM) [formerly RNDIS]: Connect to a PC with USB-C and log in over SSH or otherwise access via network protocols
 - Modern Linux 7.0 mainline kernel (with minor device tree and driver patches)
 - Modern Ubuntu 22.04/24.04 userspace
 - Full USB Gadget support
@@ -37,7 +37,7 @@ This will be a monorepo set up with submodules to pull in:
 
 - Wifi (not mainlined, investigating vendor drivers)
 - Bluetooth (same as wifi)
-- Software reboot (system hangs waiting for hardware reset button)
+- ~~Software reboot (system hangs waiting for hardware reset button)~~ nah we got this now :)
 - U-Boot 2026.1 (system depends on vendor-supplied first stage bootloader (FSBL) which uses U-Boot 2021.10)
 - MIPI / CSI (Camera interface)
 - TPU support
