@@ -1,0 +1,39 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: aic8800-milkv-firmware
+Upstream-Contact: https://github.com/milkv-duo/duo-buildroot-sdk-v2
+Source: https://github.com/milkv-duo/duo-buildroot-sdk-v2
+
+Files: *
+Copyright: AICSemi
+License: proprietary-binary-blob
+
+Files: debian/*
+Copyright: 2026 Julie Hill <queenkjuul@pm.me>
+License: GPL-2.0+
+
+License: proprietary-binary-blob
+ This firmware is provided in binary form by the manufacturer (AICSemi).
+ No explicit license text was provided with the source files. 
+ .
+ The files are distributed as-is for use with the AIC8800 wireless
+ hardware. Redistribution is assumed to be permitted based on the 
+ vendor's public distribution of these files for use in Linux-based
+ embedded systems, but no right to modify or reverse-engineer is 
+ granted or implied.
+
+License: GPL-2.0+
+ This package is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2 of the License, or
+ (at your option) any later version.
+ .
+ This package is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+ .
+ You should have received a copy of the GNU General Public License
+ along with this program. If not, see <https://www.gnu.org/licenses/>
+ .
+ On Debian systems, the complete text of the GNU General
+ Public License version 2 can be found in "/usr/share/common-licenses/GPL-2".

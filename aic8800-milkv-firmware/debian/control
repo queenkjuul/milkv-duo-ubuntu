@@ -1,0 +1,17 @@
+Source: aic8800-milkv-firmware
+Section: kernel
+Priority: optional
+Maintainer: Julie Hill <queenkjuul@pm.me>
+Build-Depends: debhelper-compat (= 13)
+Standards-Version: 4.6.0
+Homepage: https://github.com/milkv-duo/duo-buildroot-sdk-v2
+#Vcs-Browser: https://salsa.debian.org/debian/aic8800-milkv-firmware
+#Vcs-Git: https://salsa.debian.org/debian/aic8800-milkv-firmware.git
+Rules-Requires-Root: no
+
+Package: aic8800-milkv-firmware
+Architecture: all
+Multi-Arch: foreign
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Firmware for Milk-V Duo S AIC8800 WiFi+BT
+ Proprietary firmware blobs for Milk-V Duo S AIC8800 Wireless

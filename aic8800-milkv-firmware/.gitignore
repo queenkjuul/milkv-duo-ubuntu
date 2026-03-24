@@ -1,0 +1,5 @@
+debian/.debhelper
+debian/*debhelper*
+debian/*.substvars
+debian/files
+debian/aic8800-milkv-firmware/
