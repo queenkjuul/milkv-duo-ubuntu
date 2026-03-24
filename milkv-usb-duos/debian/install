@@ -1,0 +1,6 @@
+usr/libexec/milkv/* usr/libexec/milkv/
+usr/bin/* usr/bin/
+etc/netplan/* etc/netplan/
+etc/systemd/network/10-netplan-usb0.network.d/dhcp.conf etc/systemd/network/10-netplan-usb0.network.d/dhcp.conf
+lib/systemd/system/milkv-usb.service lib/systemd/system/
+usr/share/man/man1/milkv-usb-mode.1 usr/share/man/man1/

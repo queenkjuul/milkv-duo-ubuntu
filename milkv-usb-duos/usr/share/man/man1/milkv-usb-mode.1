@@ -1,0 +1,61 @@
+.TH MILKV-USB-DUOS 1 "2026-03-12" "1.0" "Milk-V Duo S USB Tools"
+.SH NAME
+milkv-usb-mode, milkv-usb-init, duos-usb-switch \- Configure and initialize Milk-V USB modes
+.SH SYNOPSIS
+.B milkv-usb-mode
+.I MODE
+.br
+.B milkv-usb-init
+.br
+.B duos-usb-switch
+.I [host|device]
+.SH DESCRIPTION
+.B milkv-usb-mode
+.br
+symlinks a USB mode setup script to /usr/bin/milkv-usb-init
+.br
+.B milkv-usb-init
+.br
+executes the currently selected setup script
+.br
+.B duos-usb-switch
+.br
+used by scripts to switch low-level Device or Host mode
+.br
+.SH MODES
+Host mode is unique, but many gadget modes can be defined. Several are included.
+.br
+Device configuration scripts live in /usr/libexec/milkv. 
+.br
+By following the pattern
+.br
+$DEVICE-usb-$MODE 
+.br
+for your script filenames, you can use 
+.br
+.B milkv-usb-mode $MODE 
+.br 
+to enable your custom modes.
+.br
+.SH Built-in Modes:
+.TP
+.B ncm
+Ethernet gadget mode (USB-C) (default).
+.TP
+.B host
+USB Host mode (USB-A).
+.TP
+.B acm
+Serial/CDC-ACM gadget mode (USB-C).
+.SH FILES
+.I /usr/bin/milkv-usb-init
+is a symlink to the active script in
+.I /usr/libexec/milkv/
+.SH Booting
+The default debian package configures systemd to run milkv-usb-init at boot.
+You can enable or disable that behavior the normal systemd way:
+.br
+.I systemctl [enable|disable] milkv-usb
+.br
+If you are not using systemd, you will need to configure your init system to run
+.I /usr/bin/milkv-usb-init

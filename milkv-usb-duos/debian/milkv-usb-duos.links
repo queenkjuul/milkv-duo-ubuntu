@@ -1,0 +1,4 @@
+usr/libexec/milkv/duos-usb-ncm usr/bin/milkv-usb-init
+usr/share/man/man1/milkv-usb-mode.1.gz usr/share/man/man1/milkv-usb.1.gz
+usr/share/man/man1/milkv-usb-mode.1.gz usr/share/man/man1/milkv-usb-init.1.gz
+usr/share/man/man1/milkv-usb-mode.1.gz usr/share/man/man1/duos-usb-switch.1.gz

@@ -1,0 +1,16 @@
+#!/usr/bin/make -f
+
+%:
+	dh $@
+
+override_dh_fixperms:
+	dh_fixperms
+	chmod 600 debian/milkv-usb-duos/etc/netplan/90-usb-gadget.yaml
+	chmod +x debian/milkv-usb-duos/usr/libexec/milkv/duos-usb-*
+	chmod +x debian/milkv-usb-duos/usr/bin/*
+
+override_dh_installsystemd:
+	dh_installsystemd --name=milkv-usb --no-stop-on-upgrade
+
+override_dh_installman:
+	dh_installman
