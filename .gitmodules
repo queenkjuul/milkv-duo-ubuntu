@@ -1,0 +1,21 @@
+[submodule "milkv-linux/linux"]
+	path = milkv-linux/linux
+	url = https://github.com/queenkjuul/linux
+[submodule "aic8800-milkv-modules-duos/aic8800-milkv-duos"]
+	path = aic8800-milkv-modules-duos/aic8800-milkv-duos
+	url = https://github.com/queenkjuul/aic8800-milkv-duos
+[submodule "duo-pinmux"]
+	path = duo-pinmux
+	url = https://github.com/queenkjuul/duo-pinmux
+[submodule "genimage"]
+	path = genimage
+	url = https://github.com/pengutronix/genimage
+[submodule "milkv-bootloader/fsbl"]
+	path = milkv-bootloader/fsbl
+	url = https://github.com/sophgo/fsbl.git
+[submodule "milkv-bootloader/opensbi"]
+	path = milkv-bootloader/opensbi
+	url = https://github.com/sophgo/opensbi.git
+[submodule "milkv-bootloader/u-boot-2021.10"]
+	path = milkv-bootloader/u-boot-2021.10
+	url = https://github.com/sophgo/u-boot-2021.10.git
