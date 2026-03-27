@@ -1,0 +1,4 @@
+usr/bin/* usr/bin/
+lib/systemd/system/milkv-wifi.service lib/systemd/system/
+lib/systemd/system/milkv-bluetooth.service lib/systemd/system/
+usr/share/man/man1/milkv-wifi-init.1 usr/share/man/man1/

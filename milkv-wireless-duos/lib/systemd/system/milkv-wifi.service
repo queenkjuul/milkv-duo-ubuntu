@@ -1,0 +1,14 @@
+[Unit]
+Description=Milk-V Duo S WiFi
+DefaultDependencies=no
+Before=network-pre.target
+Wants=network-pre.target
+After=systemd-modules-load.service local-fs.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/milkv-wifi-init
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

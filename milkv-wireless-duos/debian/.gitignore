@@ -1,0 +1,7 @@
+.debhelper/
+milkv-wireless-duos/
+debhelper-build-stamp
+files
+*.log
+*.debhelper
+*.substvars

@@ -1,0 +1,15 @@
+Source: milkv-wireless-duos
+Section: net
+Priority: optional
+Maintainer: Julie Hill <queenkjuul@pm.me>
+Homepage: https://launchpad.net/~queenkjuul/+archive/ubuntu/milkv-duos
+Build-Depends: debhelper-compat (= 13)
+Standards-Version: 4.5.1
+
+Package: milkv-wireless-duos
+Architecture: riscv64
+Depends: ${shlibs:Depends}, ${misc:Depends}, systemd, bluez, rfkill, aic8800-milkv-modules-duos, aic8800-milkv-firmware
+Recommends: iwd
+Description: Userspace scripts for initializing Milk-V Duo S wireless hardware
+ Loads relevant kernel modules and attaches bluetooth device to UART ttyS1.
+ Provides systemd services for enabling wifi and/or bluetooth at boot.

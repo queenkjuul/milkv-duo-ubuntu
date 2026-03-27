@@ -1,0 +1,20 @@
+#!/bin/bash
+
+set -e
+
+TTY=$1
+
+[ -z "$TTY" ] && { 
+  echo "No TTY provided for UART Bluetooth!"
+  echo "Usage: milkv-bt-init <ttyS*>"
+  exit 1
+}
+
+rfkill unblock bluetooth
+modprobe bluetooth
+if [ -d "/sys/module/aic8800_bsp" ]; then
+milkv-wifi-init # shared driver, powers on wireless chip
+fi
+modprobe aic8800_btlpm
+
+/usr/bin/hciattach -s 1500000 /dev/ttyS4 any 1500000 flow nosleep

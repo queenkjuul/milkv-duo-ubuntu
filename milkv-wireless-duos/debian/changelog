@@ -1,0 +1,5 @@
+milkv-wireless-duos (0.0.1) jammy; urgency=medium
+
+  * Initial implementation of Milk-V Duo S Wifi and Bluetooth userspace tools
+
+ -- Julie Hill <queenkjuul@pm.me>  Mon, 16 Mar 2026 04:21:41 +0000

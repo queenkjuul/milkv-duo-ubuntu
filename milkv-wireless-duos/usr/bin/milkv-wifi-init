@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -e
+
+modprobe aic8800_bsp
+sleep 4 # unfortunately necessary, modprobe doesn't wait for bsp to finish powering up chip
+modprobe aic8800_fdrv
