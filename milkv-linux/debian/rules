@@ -1,0 +1,71 @@
+#!/usr/bin/make -f
+
+SRC := $(CURDIR)/linux
+INSTALL_HDR_PATH=$(CURDIR)/debian/linux-headers-milkv-duos/usr/src/linux-headers-$(KERNELRELEASE)
+INSTALL_MOD_PATH=$(CURDIR)/debian/linux-image-milkv-duos
+
+export KERNELRELEASE := 7.0.0-rc5-qkj1
+export ARCH := riscv
+export SRCARCH := $(ARCH)
+export CROSS_COMPILE := riscv64-linux-gnu-
+export CC := $(CROSS_COMPILE)gcc
+export HOSTCC := gcc
+
+%:
+	dh $@
+
+override_dh_auto_configure:
+	cp milkv-duos_defconfig linux/.config
+	$(MAKE) -C $(SRC) olddefconfig
+
+override_dh_auto_build:
+	$(MAKE) -C $(SRC) -j$(shell nproc) LOCALVERSION="" KERNELRELEASE=$(KERNELRELEASE) Image dtbs modules
+
+override_dh_auto_install:
+	mkdir -p debian/linux-image-milkv-duos/boot
+	install -m 644 linux/arch/riscv/boot/Image debian/linux-image-milkv-duos/boot/vmlinuz-$(KERNELRELEASE)
+
+	cp linux/arch/riscv/boot/dts/sophgo/sg2000-milkv-duo-s.dtb debian/linux-image-milkv-duos/boot/
+
+	$(MAKE) -C $(SRC) LOCALVERSION="" KERNELRELEASE=$(KERNELRELEASE) INSTALL_MOD_PATH=$(INSTALL_MOD_PATH) modules_install
+	rm -f $(CURDIR)/debian/linux-image-milkv-duos/lib/modules/$(KERNELRELEASE)/build
+	rm -f $(CURDIR)/debian/linux-image-milkv-duos/lib/modules/$(KERNELRELEASE)/source
+
+	cd $(SRC) && \
+	MAKE=$(MAKE) \
+	KERNELRELEASE=$(KERNELRELEASE) \
+	LOCALVERSION="" \
+	srctree=. \
+	objtree=. \
+	./scripts/package/install-extmod-build \
+	$(INSTALL_HDR_PATH)
+
+	cd $(CURDIR)
+	pwd
+	
+	mkdir -p $(CURDIR)/debian/linux-headers-milkv-duos/lib/modules/$(KERNELRELEASE)
+	ln -sf /usr/src/linux-headers-$(KERNELRELEASE) $(CURDIR)/debian/linux-headers-milkv-duos/lib/modules/$(KERNELRELEASE)/build
+
+override_dh_installdeb:
+	dh_installdeb
+	sed -i "s/@KVER@/$(KERNELRELEASE)/g" debian/linux-image-milkv-duos/DEBIAN/postinst
+	sed -i "s/@KVER@/$(KERNELRELEASE)/g" debian/linux-image-milkv-duos/DEBIAN/postrm
+	sed -i "s/@KVER@/$(KERNELRELEASE)/g" debian/linux-headers-milkv-duos/DEBIAN/postrm
+
+override_dh_strip:
+	dh_strip -Xusr/src/linux-headers-$(KERNELRELEASE)
+
+override_dh_dwz:
+	dh_dwz -Xusr/src/linux-headers-$(KERNELRELEASE)
+
+override_dh_shlibdeps:
+	dh_shlibdeps -Xusr/src/linux-headers-$(KERNELRELEASE)
+
+clean:
+	dh_clean
+	rm -rf debian/linux-headers-milkv-duos || true
+	rm -rf debian/linux-image-milkv-duos || true
+	rm -rf debian/.debhelper || true
+	rm debian/*debhelper* || true
+	rm debian/*substvars || true
+	rm debian/files || true

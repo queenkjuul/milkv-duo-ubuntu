@@ -1,0 +1,8 @@
+#!/bin/sh
+set -e
+if [ "$1" = "configure" ]; then
+    u-boot-update
+    # it sucks, but there's like, no possible way to determine 
+    # KVER at postinst runtime
+    depmod -a @KVER@
+fi

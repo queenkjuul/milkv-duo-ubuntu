@@ -1,0 +1,6 @@
+debian/linux-image-milkv-duos
+debian/linux-headers-milkv-duos
+debian/files
+debian/*debhelper*
+debian/.debhelper
+debian/*substvars

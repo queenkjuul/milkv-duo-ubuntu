@@ -1,0 +1,77 @@
+From 0ce0ccee4886dcf5395463e2f4cd351afb72facb Mon Sep 17 00:00:00 2001
+From: queenkjuul <queenkjuul@pm.me>
+Date: Tue, 24 Mar 2026 09:28:10 +0000
+Subject: [PATCH 20/20] riscv: dts: sophgo: enable all peripherals for sg2000
+
+---
+ .../boot/dts/sophgo/sg2000-milkv-duo-s.dts    | 40 +++++++++++++++++++
+ 1 file changed, 40 insertions(+)
+
+diff --git a/arch/riscv/boot/dts/sophgo/sg2000-milkv-duo-s.dts b/arch/riscv/boot/dts/sophgo/sg2000-milkv-duo-s.dts
+index 1f15c480c967..1517d61a4903 100644
+--- a/arch/riscv/boot/dts/sophgo/sg2000-milkv-duo-s.dts
++++ b/arch/riscv/boot/dts/sophgo/sg2000-milkv-duo-s.dts
+@@ -42,6 +42,22 @@ &gmac0 {
+ 	status = "okay";
+ };
+ 
++&i2c0 {
++	status = "okay";
++};
++
++&i2c1 {
++	status = "okay";
++};
++
++&i2c2 {
++	status = "okay";
++};
++
++&i2c3 {
++	status = "okay";
++};
++
+ &i2c4 {
+ 	status = "okay";
+ };
+@@ -70,6 +86,18 @@ &sdhci1 {
+ 	status = "okay";
+ };
+ 
++&spi0 {
++	status = "okay";
++};
++
++&spi1 {
++	status = "okay";
++};
++
++&spi2 {
++	status = "okay";
++};
++
+ &spi3 {
+ 	status = "okay";
+ };
+@@ -78,6 +106,18 @@ &uart0 {
+ 	status = "okay";
+ };
+ 
++&uart1 {
++	status = "okay";
++};
++
++&uart2 {
++	status = "okay";
++};
++
++&uart3 {
++	status = "okay";
++};
++
+ &uart4 {
+ 	status = "okay";
+ };
+-- 
+2.34.1
+

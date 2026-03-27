@@ -1,0 +1,28 @@
+From 570680bbc342cf8d8ee3a109d948407bdac014be Mon Sep 17 00:00:00 2001
+From: queenkjuul <queenkjuul@pm.me>
+Date: Sat, 14 Mar 2026 06:16:53 +0000
+Subject: [PATCH 17/20] riscv64: dts: sophgo: enable uart4 for
+ sg2000-milkv-duo-s bluetooth
+
+---
+ arch/riscv/boot/dts/sophgo/sg2000-milkv-duo-s.dts | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/riscv/boot/dts/sophgo/sg2000-milkv-duo-s.dts b/arch/riscv/boot/dts/sophgo/sg2000-milkv-duo-s.dts
+index 5a38ba0a8f6b..1f15c480c967 100644
+--- a/arch/riscv/boot/dts/sophgo/sg2000-milkv-duo-s.dts
++++ b/arch/riscv/boot/dts/sophgo/sg2000-milkv-duo-s.dts
+@@ -78,6 +78,10 @@ &uart0 {
+ 	status = "okay";
+ };
+ 
++&uart4 {
++	status = "okay";
++};
++
+ &usb {
+ 	dr_mode = "otg";
+ 	status = "okay";
+-- 
+2.34.1
+
