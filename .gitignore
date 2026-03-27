@@ -1,0 +1,13 @@
+images/
+rootfs/
+jammy/
+noble/
+tmp/
+*.build
+*.buildinfo
+*.changes
+*.deb
+*.ddeb
+*.dsc
+*.tar.xz
+swap.img
