@@ -1,3 +1,9 @@
+aic8800-milkv-firmware (1.0.0) jammy; urgency=medium
+
+  * Tested and verified for Launchpad upload
+
+ -- Julie Hill <queenkjuul@pm.me>  Sun, 29 Mar 2026 20:23:36 +0000
+
 aic8800-milkv-firmware (0.0.1) jammy; urgency=medium
 
   * Initial Release.

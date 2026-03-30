@@ -12,6 +12,5 @@ Rules-Requires-Root: no
 Package: aic8800-milkv-firmware
 Architecture: all
 Multi-Arch: foreign
-Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Firmware for Milk-V Duo S AIC8800 WiFi+BT
  Proprietary firmware blobs for Milk-V Duo S AIC8800 Wireless
