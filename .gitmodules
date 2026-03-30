@@ -10,12 +10,6 @@
 [submodule "genimage"]
 	path = genimage
 	url = https://github.com/pengutronix/genimage
-[submodule "milkv-bootloader/fsbl"]
-	path = milkv-bootloader/fsbl
-	url = https://github.com/sophgo/fsbl.git
-[submodule "milkv-bootloader/opensbi"]
-	path = milkv-bootloader/opensbi
-	url = https://github.com/sophgo/opensbi.git
-[submodule "milkv-bootloader/u-boot-2021.10"]
-	path = milkv-bootloader/u-boot-2021.10
-	url = https://github.com/sophgo/u-boot-2021.10.git
+[submodule "milkv-bootloader/host-tools"]
+	path = milkv-bootloader/host-tools
+	url = https://github.com/milkv-duo/host-tools.git
