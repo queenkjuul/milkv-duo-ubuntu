@@ -9,22 +9,23 @@ PASSWORD=$3
 [ -z $PASSWORD ] && { echo "No password!"; exit 1; }
 
 PACKAGES="util-linux haveged openssh-server systemd kmod \
-  conntrack ebtables ethtool iproute2 curl \
+  conntrack ebtables ethtool iproute2 curl snapd \
   iptables mount socat iputils-ping vim dhcpcd5 neofetch sudo chrony \
-  nano git fish" # this line optional, add or change your own here
+  aic8800-milkv-firmware milkv-usb-$BOARD \
+  nano git fish python-is-python3" # this line optional, add or change your own here
 
-apt-get update && apt-get upgrade -y || { echo "failed to update packages"; exit 1; }
-ls /*.deb | grep -v "milkv-pinmux-*" | xargs apt-get install -y
+mv /queenkjuul-ubuntu-milkv-$BOARD.gpg /etc/apt/trusted.gpg.d/queenkjuul-ubuntu-milkv-$BOARD.gpg
+chmod 644 /etc/apt/trusted.gpg.d/queenkjuul-ubuntu-milkv-$BOARD.gpg
+apt-get update || { echo "failed to update packages"; exit 1; }
+
+DEBS=$(for file in /*.deb; do
+  pkg=$(dpkg-deb -f "$file" Package)
+  [[ ! " $PACKAGES " =~ " $pkg " ]] && [[ ! "$pkg" =~ "milkv-pinmux" ]] && echo "$file"
+done)
 apt-get install \
   --no-install-recommends \
   -y \
-  $PACKAGES
-
-if [ ! $BOARD = duos ]; then
-  echo "Sorry, $BOARD support coming soon" && exit 1
-else
-  apt-get install /milkv-pinmux-$BOARD*.deb
-fi
+  $PACKAGES $DEBS milkv-pinmux-$BOARD
 
 # comment next two lines to disable zram
 apt-get install -y zram-config
@@ -81,6 +82,7 @@ echo "OK"
 
 echo -n "Preparing system for first boot..."
 rm -f /etc/ssh/ssh_host_*_key*
+mkdir -p /usr/libexec/milkv && mv /first-boot.sh /usr/libexec/milkv/first-boot.sh
 cat >/lib/systemd/system/milkv-first-boot.service <<EOF
 [Unit]
 Description=Milk-V Duo First Boot Setup
@@ -90,23 +92,12 @@ Before=basic.target
 ConditionFirstBoot=yes
 DefaultDependencies=no
 
-
 [Service]
 Type=oneshot
 RemainAfterExit=yes
 StandardOutput=journal+console
 StandardError=journal
-ExecStart=echo "$HNAME" > /etc/hostname
-ExecStart=echo "First Boot: Generating SSH keys"
-ExecStart=ssh-keygen -A
-ExecStart=echo -n "First Boot: Expanding root partition..."
-ExecStart=parted -s -a opt /dev/mmcblk0 "resizepart 3 100%"
-ExecStart=resize2fs /dev/mmcblk0p3
-ExecStart=echo "OK."
-ExecStart=echo "First Boot: Fixing mandb"
-ExecStart=chown -R man:root /var/cache/man
-ExecStart=runuser -u man -- mandb -q
-ExecStart=systemctl disable milkv-first-boot.service
+ExecStart=/usr/libexec/milkv/first-boot.sh
 
 [Install]
 WantedBy=basic.target

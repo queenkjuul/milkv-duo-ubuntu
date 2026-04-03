@@ -8,6 +8,7 @@ PKG_URL=http://ports.ubuntu.com/ubuntu-ports
 PKG_STE="main restricted universe multiverse"
 PKG_SRC="deb $PKG_URL $PKG_STE"
 BOARD=duos
+PPA_URL=https://ppa.launchpadcontent.net/queenkjuul/milkv-$BOARD/ubuntu
 
 FLAG=$1
 
@@ -58,22 +59,23 @@ mmdebstrap --arch=riscv64 \
             --mode=fakechroot \
             --variant=standard \
             --setup-hook=/usr/share/mmdebstrap/hooks/merged-usr/setup00.sh \
+            --setup-hook="copy-in ./queenkjuul-ubuntu-milkv-$BOARD.gpg /" \
             --setup-hook="copy-in ./*.deb /" \
-            --setup-hook="copy-in ./second-stage.sh /" \
+            --setup-hook="copy-in ./scripts/second-stage.sh /" \
+            --setup-hook="copy-in ./scripts/first-boot.sh /" \
             --customize-hook='chroot "$1" /bin/bash -e /second-stage.sh '$BOARD' '$HNAME' '$PASSWORD \
             $RELEASE rootfs \
             "deb $PKG_URL jammy $PKG_STE" \
             "deb $PKG_URL jammy-backports $PKG_STE" \
-            "deb $PKG_URL jammy-security $PKG_STE"
+            "deb $PKG_URL jammy-security $PKG_STE" \
+            "deb $PPA_URL jammy main"
 
-echo "Installing Bootloader..."
-cp rootfs/boot/vmlinuz-* boot/Image
-cp rootfs/boot/*.dtb boot/
-mkimage -f boot/milkv-$BOARD.its boot/boot.sd
+echo -n "Installing Bootloader..."
+cp rootfs/boot/boot.sd-* images/boot.sd
 echo "OK."
 
 echo "Generating SD Card Image..."
 dd if=/dev/zero of=images/swap.img bs=1M count=256
 mkswap images/swap.img
-fakeroot genimage --rootpath ./rootfs --config ./genimage.cfg --inputpath ./boot
+fakeroot genimage --rootpath ./rootfs --config ./genimage.cfg --inputpath ./images
 echo "SD card image generated at ./images/ubuntu-milkv.img"

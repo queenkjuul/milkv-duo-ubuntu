@@ -11,3 +11,4 @@ tmp/
 *.dsc
 *.tar.xz
 swap.img
+*.ppa.upload
