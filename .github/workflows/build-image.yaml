@@ -1,0 +1,69 @@
+name: Milk-V Duo - Build Image
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_image:
+        description: 'Publish'
+        required: true
+        type: boolean
+        default: false
+      is_prerelease:
+        description: 'Prerelease'
+        type: boolean
+        required: true
+        default: true
+      compile:
+        description: 'Compile from source'
+        type: boolean
+        required: true
+        default: false
+      tag_name:
+        description: 'Tag (optional)'
+        required: false
+        type: string
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up qemu
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: riscv64
+
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          submodules: ${{ inputs.compile }}
+
+      - name: Build in container
+        uses: addnab/docker-run-action@v3
+        with:
+          image: ubuntu:jammy
+          options: --privileged -v ${{ github.workspace }}:/project -w /project
+          run: |
+            apt-get update -y
+            apt-get install -y git
+            git clone https://github.com/pengutronix/genimage.git
+            ./scripts/setup.sh
+            [ "${{ inputs.compile }}" = "true" ] && ./scripts/compile.sh
+            ./build.sh
+
+      - name: Upload Image as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: milkv-duos-img-${{ github.run_id }}
+          path: images/ubuntu-milkv-duos.img
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        if: inputs.release_image == true
+        with:
+          tag_name: ${{ inputs.tag_name || format('build-{0}', github.run_id) }}
+          files: images/ubuntu-milkv.img
+          prerelease: ${{ inputs.is_prerelease }}
+          name: "Milk-V Duo S Image: ${{ inputs.tag_name || github.ref_name }}"
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
