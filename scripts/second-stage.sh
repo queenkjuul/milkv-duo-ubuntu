@@ -9,23 +9,20 @@ PASSWORD=$3
 [ -z $PASSWORD ] && { echo "No password!"; exit 1; }
 
 PACKAGES="util-linux haveged openssh-server systemd kmod \
-  conntrack ebtables ethtool iproute2 curl snapd \
+  conntrack ebtables ethtool iproute2 curl python3-pip \
   iptables mount socat iputils-ping vim dhcpcd5 neofetch sudo chrony \
-  aic8800-milkv-firmware milkv-usb-$BOARD \
-  nano git fish python-is-python3" # this line optional, add or change your own here
+  linux-image-milkv-$BOARD aic8800-milkv-firmware aic8800-milkv-modules-$BOARD \
+  milkv-usb-$BOARD milkv-pinmux-$BOARD milkv-wireless-$BOARD \
+  nano git python-is-python3 impala bluetui" # this line optional, add or change your own here
 
 mv /queenkjuul-ubuntu-milkv-$BOARD.gpg /etc/apt/trusted.gpg.d/queenkjuul-ubuntu-milkv-$BOARD.gpg
 chmod 644 /etc/apt/trusted.gpg.d/queenkjuul-ubuntu-milkv-$BOARD.gpg
 apt-get update || { echo "failed to update packages"; exit 1; }
 
-DEBS=$(for file in /*.deb; do
-  pkg=$(dpkg-deb -f "$file" Package)
-  [[ ! " $PACKAGES " =~ " $pkg " ]] && [[ ! "$pkg" =~ "milkv-pinmux" ]] && echo "$file"
-done)
 apt-get install \
   --no-install-recommends \
   -y \
-  $PACKAGES $DEBS milkv-pinmux-$BOARD
+  $PACKAGES
 
 # comment next two lines to disable zram
 apt-get install -y zram-config
