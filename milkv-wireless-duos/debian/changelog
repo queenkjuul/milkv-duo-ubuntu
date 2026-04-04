@@ -1,3 +1,39 @@
+milkv-wireless-duos (1.0.0) jammy; urgency=medium
+
+  * Tested and verified for Launchpad 1.0 release
+
+ -- Julie Hill <queenkjuul@pm.me>  Sat, 04 Apr 2026 15:33:37 +0000
+
+milkv-wireless-duos (0.3.0) jammy; urgency=medium
+
+  * Improve boot persistence code
+
+ -- Julie Hill <queenkjuul@pm.me>  Sat, 04 Apr 2026 14:13:48 +0000
+
+milkv-wireless-duos (0.2.0) jammy; urgency=medium
+
+  * Persist WiFi MAC across boots if selected in setup script
+
+ -- Julie Hill <queenkjuul@pm.me>  Sat, 04 Apr 2026 03:48:30 +0000
+
+milkv-wireless-duos (0.1.2) jammy; urgency=medium
+
+  * Fix rules script
+
+ -- Julie Hill <queenkjuul@pm.me>  Sat, 04 Apr 2026 00:33:57 +0000
+
+milkv-wireless-duos (0.1.1) jammy; urgency=medium
+
+  * Initial Launchpad release
+
+ -- Julie Hill <queenkjuul@pm.me>  Fri, 03 Apr 2026 23:07:21 +0000
+
+milkv-wireless-duos (0.1.0) jammy; urgency=medium
+
+  * Refactor; add setup script, fix first boot
+
+ -- Julie Hill <queenkjuul@pm.me>  Fri, 03 Apr 2026 23:05:40 +0000
+
 milkv-wireless-duos (0.0.1) jammy; urgency=medium
 
   * Initial implementation of Milk-V Duo S Wifi and Bluetooth userspace tools

@@ -3,7 +3,7 @@ Description=Milk-V Duo S WiFi
 DefaultDependencies=no
 Before=network-pre.target
 Wants=network-pre.target
-After=systemd-modules-load.service local-fs.target
+After=systemd-modules-load.service local-fs.target milkv-first-boot.service
 
 [Service]
 Type=oneshot

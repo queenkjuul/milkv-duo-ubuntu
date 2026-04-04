@@ -13,3 +13,10 @@ override_dh_installsystemd:
 
 override_dh_installman:
 	dh_installman
+
+clean:
+	rm -rf debian/.debhelper || true
+	rm -rf debian/milkv-wireless-duos || true
+	rm debian/*debhelper* || true
+	rm debian/*substvars* || true
+	rm debian/files || true

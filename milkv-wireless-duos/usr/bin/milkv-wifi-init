@@ -1,7 +1,39 @@
 #!/bin/bash
 
-set -e
+TIMEOUT=${TIMEOUT:-15}
+BSP_MOD="aic8800_bsp"
+WIFI_MOD="aic8800_fdrv"
+ELAPSED=0
+STEP=1
 
-modprobe aic8800_bsp
-sleep 4 # unfortunately necessary, modprobe doesn't wait for bsp to finish powering up chip
-modprobe aic8800_fdrv
+echo "[aic8800] Initializing Wireless BSP..."
+if [ ! -e "/sys/module/$BSP_MOD" ];then
+  modprobe "$BSP_MOD"
+  sleep 3
+  ELAPSED=3
+fi
+
+echo -n "[aic8800] Waiting for hardware..."
+while [ "$ELAPSED" -lt "$TIMEOUT" ]; do
+    if [ -e "/sys/module/$WIFI_MOD" ]; then
+        echo -e "\n[aic8800] Success: $WIFI_MOD loaded after ${ELAPSED}s."
+        exit 0
+    fi
+
+    modprobe "$WIFI_MOD"
+
+    if [ ! -e "/sys/module/$WIFI_MOD" ]; then
+        echo -n "."
+        sleep "$STEP"
+        ELAPSED=$((ELAPSED + STEP))
+        STEP=$((STEP + 1))
+    fi
+done
+
+if [ -e "/sys/module/$WIFI_MOD" ]; then
+    echo -e "\n[aic8800] Success: $WIFI_MOD loaded."
+    exit 0
+else
+    echo -e "\n[aic8800] Error: $WIFI_MOD failed to load within ${TIMEOUT}s."
+    exit 1
+fi

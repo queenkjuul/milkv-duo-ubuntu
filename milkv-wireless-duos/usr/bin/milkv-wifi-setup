@@ -1,0 +1,103 @@
+#!/bin/bash
+
+# Defaults
+MIN_ATTEMPTS=3
+MAX_ATTEMPTS=10
+DEVICE="wlan0"
+INI_FILE=/lib/firmware/aic8800/aic_userconfig_8800d80.txt 
+
+# Help/Usage
+usage() {
+    echo "Usage: $0 [-c min_attempts] [-m max_attempts] [-d device] [device]"
+    echo "Example: $0 -c 3 -m 15 wlan0"
+    exit 1
+}
+
+# Parse flags
+while getopts "c:m:d:h" opt; do
+    case $opt in
+        c) MIN_ATTEMPTS=$OPTARG ;;
+        m) MAX_ATTEMPTS=$OPTARG ;;
+        d) DEVICE=$OPTARG ;;
+        h) usage ;;
+        *) usage ;;
+    esac
+done
+shift $((OPTIND-1))
+
+# If an argument remains, it's the device (overrides -d)
+if [ -n "$1" ]; then
+    DEVICE="$1"
+fi
+
+# Ensure iwd is ready
+systemctl start iwd >/dev/null 2>&1 || { echo "Failed to start iwd"; exit 1; }
+iwctl device "$DEVICE" set-property Powered on >/dev/null 2>&1
+
+echo -n "Scanning for networks on $DEVICE"
+
+for ((i=1; i<=MAX_ATTEMPTS; i++)); do
+    iwctl station "$DEVICE" scan >/dev/null 2>&1
+    sleep 1
+    echo -n "."
+
+    # Extract SSIDs: Space-aware and ANSI-safe
+    NETWORKS=()
+    while IFS= read -r line; do
+        if [[ "$line" =~ (psk|open|8021x|wep) ]]; then
+            # Grab everything from the start of the SSID up to the security type
+            SSID=$(echo "$line" | sed -E 's/^[* >]*//; s/  +(psk|open|8021x|wep).*//')
+            SSID=$(echo "$SSID" | sed 's/[[:space:]]*$//')
+            if [[ -n "$SSID" ]]; then
+                NETWORKS+=("$SSID")
+            fi
+        fi
+    done < <(iwctl station "$DEVICE" get-networks | sed 's/\x1B\[[0-9;]*[JKmsu]//g')
+
+    # Status update at the floor
+    if [ $i -eq "$MIN_ATTEMPTS" ] && [ ${#NETWORKS[@]} -eq 0 ]; then
+        echo -e "\nStill searching, no networks found yet..."
+        echo -n "Scanning"
+    fi
+
+    # Exit early only if we hit the floor and have results
+    if [ $i -ge "$MIN_ATTEMPTS" ] && [ ${#NETWORKS[@]} -gt 0 ]; then
+        break
+    fi
+done
+
+echo -e "\nFound ${#NETWORKS[@]} networks:"
+echo "-------------------------------"
+for i in "${!NETWORKS[@]}"; do
+    printf "%2d) %s\n" "$((i+1))" "${NETWORKS[$i]}"
+done
+echo "-------------------------------"
+
+if [ ${#NETWORKS[@]} -eq 0 ]; then
+    echo "No networks found. Exiting."
+    exit 1
+fi
+
+read -p "Select a network (1-${#NETWORKS[@]}): " CHOICE
+
+if [[ ! "$CHOICE" =~ ^[0-9]+$ ]] || [ "$CHOICE" -lt 1 ] || [ "$CHOICE" -gt "${#NETWORKS[@]}" ]; then
+    echo "Invalid selection."
+    exit 1
+fi
+
+SSID=${NETWORKS[$((CHOICE-1))]}
+
+read -s -p "Enter password for '$SSID': " PASS
+echo -e "\nConnecting to '$SSID'..."
+
+if iwctl station "$DEVICE" connect "$SSID" --passphrase "$PASS"; then
+    echo "Success! Connected."
+    read -p "Apply settings at boot automatically? (y/n)" BOOT_APPLY
+    if [ "$BOOT_APPLY" = "y" ]; then
+        systemctl is-enabled -q iwd.service || systemctl enable iwd
+        grep -q "^MAC_ADDR=" "$INI_FILE" || echo "MAC_ADDR=$(cat /sys/class/net/$DEVICE/address)" >> "$INI_FILE"
+    fi
+else
+    echo "Failed to connect to '$SSID'."
+    exit 1
+fi
