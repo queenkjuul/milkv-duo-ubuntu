@@ -1,0 +1,11 @@
+impala (0.7.4+1) jammy; urgency=medium
+
+  * Fix debian packaging
+
+ -- Julie Hill <queenkjuul@pm.me>  Sat, 04 Apr 2026 03:21:11 +0000
+
+impala (0.7.4) jammy; urgency=medium
+
+  * Initial Release.
+
+ -- Julie Hill <queenkjuul@pm.me>  Sat, 04 Apr 2026 02:48:47 +0000

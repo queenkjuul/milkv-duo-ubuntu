@@ -1,0 +1,14 @@
+Source: impala
+Section: utils
+Priority: optional
+Maintainer: Julie Hill <queenkjuul@pm.me>
+Build-Depends: debhelper-compat (= 13)
+Standards-Version: 4.6.0
+Homepage: https://github.com/pythops/impala
+Rules-Requires-Root: no
+
+Package: impala
+Architecture: riscv64
+Depends: ${misc:Depends}
+Description: TUI for managing wifi
+ WiFi management TUI for Linux
