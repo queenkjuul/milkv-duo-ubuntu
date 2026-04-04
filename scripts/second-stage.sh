@@ -19,10 +19,25 @@ mv /queenkjuul-ubuntu-milkv-$BOARD.gpg /etc/apt/trusted.gpg.d/queenkjuul-ubuntu-
 chmod 644 /etc/apt/trusted.gpg.d/queenkjuul-ubuntu-milkv-$BOARD.gpg
 apt-get update || { echo "failed to update packages"; exit 1; }
 
+LOCAL_DEBS=$(ls /*.deb | grep -v "milkv-pinmux-")
+LOCAL_PACKAGES=
+for deb in /*.deb; do
+  LOCAL_PACKAGES="$LOCAL_PACKAGES $(dpkg-deb -f "$deb" Package)"
+done
+TARGET_PACKAGES=
+for pkg in $PACKAGES; do
+  [[ " $LOCAL_PACKAGES " =~ " $pkg " ]] || TARGET_PACKAGES="$TARGET_PACKAGES $pkg"
+done
+echo "Installing $TARGET_PACKAGES"
 apt-get install \
   --no-install-recommends \
+  --allow-downgrades \
   -y \
-  $PACKAGES
+  $LOCAL_DEBS $TARGET_PACKAGES
+
+[ -f /milkv-pinmux-$BOARD_*.deb ] \
+  && apt-get install -y /milkv-pinmux-$BOARD*.deb \
+  || apt-get install -y milkv-pinmux-$BOARD
 
 # comment next two lines to disable zram
 apt-get install -y zram-config
@@ -79,7 +94,8 @@ echo "OK"
 
 echo -n "Preparing system for first boot..."
 rm -f /etc/ssh/ssh_host_*_key*
-mkdir -p /usr/libexec/milkv && mv /first-boot.sh /usr/libexec/milkv/first-boot.sh
+mkdir -p /usr/libexec/milkv 
+mv /first-boot.sh /usr/libexec/milkv/first-boot.sh
 cat >/lib/systemd/system/milkv-first-boot.service <<EOF
 [Unit]
 Description=Milk-V Duo First Boot Setup
