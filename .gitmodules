@@ -13,3 +13,21 @@
 [submodule "milkv-bootloader/host-tools"]
 	path = milkv-bootloader/host-tools
 	url = https://github.com/milkv-duo/host-tools.git
+[submodule "milkv-wireless-duos/impala"]
+	path = milkv-wireless-duos/impala
+	url = https://github.com/pythops/impala.git
+[submodule "milkv-wireless-duos/bluetui"]
+	path = milkv-wireless-duos/bluetui
+	url = https://github.com/pythops/bluetui.git
+[submodule "bluetui"]
+	path = bluetui
+	url = https://github.com/pythops/bluetui.git
+[submodule "impala"]
+	path = impala
+	url = https://github.com/pythops/impala.git
+[submodule "extras/impala/src"]
+	path = extras/impala/src
+	url = https://github.com/pythops/impala.git
+[submodule "extras/bluetui/src"]
+	path = extras/bluetui/src
+	url = https://github.com/pythops/bluetui.git
