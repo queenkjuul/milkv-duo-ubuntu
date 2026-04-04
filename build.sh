@@ -21,13 +21,13 @@ build.sh - create an Ubuntu image for Milk-V Duo boards
     -h | --help     show this help
     -c | --custom   prompt for settings
 
-default HNAME is "ubuntu-milkv" and default root password is "milkv"
+default hostname is "ubuntu-milkv" and default root password is "milkv"
 EOF
     exit
 fi
 
 if [ "$1" = "--custom" ] || [ "$1" = "-c" ]; then
-    [ -z "$HNAME" ] && read -rp "HNAME (optional, default: $DEFAULT_HNAME): " HNAME
+    [ -z "$HNAME" ] && read -rp "hostname (optional, default: $DEFAULT_HNAME): " HNAME
     [ -z "$PASSWORD" ] && { read -rsp "root password (optional, default: $DEFAULT_PASSWORD): " PASSWORD; echo; }
 fi
 
@@ -78,4 +78,5 @@ echo "Generating SD Card Image..."
 dd if=/dev/zero of=images/swap.img bs=1M count=256
 mkswap images/swap.img
 fakeroot genimage --rootpath ./rootfs --config ./genimage.cfg --inputpath ./images
-echo "SD card image generated at ./images/ubuntu-milkv.img"
+mv images/ubuntu-milkv.img images/ubuntu-milkv-$BOARD.img
+echo "SD card image generated at ./images/ubuntu-milkv-$BOARD.img"
