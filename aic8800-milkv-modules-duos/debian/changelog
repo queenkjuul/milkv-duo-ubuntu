@@ -1,3 +1,27 @@
+aic8800-milkv-modules-duos (0.1.0+7.0~rc5+qkj3) jammy; urgency=medium
+
+  * Initial Launchpad release
+
+ -- Julie Hill <queenkjuul@pm.me>  Fri, 03 Apr 2026 21:02:24 +0000
+
+aic8800-milkv-modules-duos (0.0.1+7.0~rc5+qkj3) jammy; urgency=medium
+
+  * Sync with kernel version
+
+ -- Julie Hill <queenkjuul@pm.me>  Fri, 03 Apr 2026 14:52:05 +0000
+
+aic8800-milkv-modules-duos (0.0.1+7.0~rc5+qkj2) jammy; urgency=medium
+
+  * Build dependencies, driver configs
+
+ -- Julie Hill <queenkjuul@pm.me>  Wed, 01 Apr 2026 15:04:22 +0000
+
+aic8800-milkv-modules-duos (0.0.1+7.0~rc5-qkj1-2) jammy; urgency=medium
+
+  * Update to newer kernel config
+
+ -- Julie Hill <queenkjuul@pm.me>  Wed, 01 Apr 2026 08:33:06 +0000
+
 aic8800-milkv-modules-duos (0.0.1+7.0~rc5) jammy; urgency=medium
 
   * Rebase to Linux 7.0-rc5

@@ -1,5 +1,12 @@
 #!/usr/bin/make -f
 
+BUILD_ARCH := $(shell dpkg-architecture -qDEB_BUILD_ARCH)
+ifeq ($(BUILD_ARCH),riscv64)
+	export CROSS_COMPILE :=
+else
+	export CROSS_COMPILE := riscv64-linux-gnu-
+endif
+
 DEB_VER := $(shell dpkg-query -W linux-headers-milkv-duos | cut -f 2)
 export KERNELRELEASE := $(shell echo $(DEB_VER) | \
 									sed 's/~/-/g' | \
@@ -12,7 +19,7 @@ export BUILD_DIR = aic8800-milkv-duos/aicsemi/aic8800/
 
 
 override_dh_auto_build:
-	$(MAKE) ARCH=riscv CROSS_COMPILE=riscv64-linux-gnu- -C $(HEADERS) M=$(CURDIR)/$(BUILD_DIR) KERNELRELEASE=$(KERNELRELEASE) modules
+	$(MAKE) ARCH=riscv CROSS_COMPILE=$(CROSS_COMPILE) -C $(HEADERS) M=$(CURDIR)/$(BUILD_DIR) KERNELRELEASE=$(KERNELRELEASE) modules
 
 override_dh_auto_install:
 	mkdir -p debian/aic8800-milkv-modules-duos/lib/modules/$(KERNELRELEASE)/kernel/drivers/net/wireless/aic8800
