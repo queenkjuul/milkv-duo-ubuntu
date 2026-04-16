@@ -1,3 +1,21 @@
+aic8800-milkv-modules-duos (1.1.0+7.0.0+qkj1) noble; urgency=medium
+
+  * Rebuild for 7.0.0
+
+ -- Julie Hill <queenkjuul@pm.me>  Mon, 13 Apr 2026 01:46:43 +0000
+
+aic8800-milkv-modules-duos (1.1.0+7.0~rc7+qkj2) noble; urgency=medium
+
+  * WiFi enable refactor, upgrade to noble
+
+ -- Julie Hill <queenkjuul@pm.me>  Sun, 12 Apr 2026 20:27:14 +0000
+
+aic8800-milkv-modules-duos (1.0.0+7.0~rc7+qkj1) jammy; urgency=medium
+
+  * Rebuild for 7.0-rc7
+
+ -- Julie Hill <queenkjuul@pm.me>  Mon, 06 Apr 2026 01:54:48 +0000
+
 aic8800-milkv-modules-duos (0.1.0+7.0~rc5+qkj3) jammy; urgency=medium
 
   * Initial Launchpad release
