@@ -1,3 +1,9 @@
+bluetui (0.8.1+2) noble; urgency=medium
+
+  * Rerelease for Noble
+
+ -- Julie Hill <queenkjuul@pm.me>  Fri, 17 Apr 2026 00:48:39 +0000
+
 bluetui (0.8.1+1) jammy; urgency=medium
 
   * Fix Launchpad packaging
