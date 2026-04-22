@@ -31,3 +31,6 @@
 [submodule "extras/bluetui/src"]
 	path = extras/bluetui/src
 	url = https://github.com/pythops/bluetui.git
+[submodule "extras/sacad/src"]
+	path = extras/sacad/src
+	url = https://github.com/desbma/sacad.git
