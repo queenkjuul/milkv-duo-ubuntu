@@ -1,32 +1,24 @@
 .TH MILKV-WIRELESS-DUOS 1 "2026-03-12" "1.0" "Milk-V Duo S Wireless Tools"
 .SH NAME
-milkv-wifi-init, milkv-bt-init \- Initialize Milk-V Duo S wireless hardware
+milkv-wireless-init \- Initialize Milk-V Duo S wireless hardware
 .SH SYNOPSIS
 .B milkv-wifi-init
 .br
-.B milkv-bt-init
-.br
 .SH DESCRIPTION
-.B milkv-wifi-init
+.B milkv-wireless-init
 .br
 Loads kernel modules and firmware for Milk-V Duo S AIC8800 WiFi. Loading the kernel module powers on the chip.
 .br
-.B milkv-bt-init
-.br
-Loads kernel modules and firmware for Milk-V Duo S AIC8800 UART-based Bluetooth 5. Also attaches the bluetooth driver to the relevant UART at /dev/ttyS1. 
+Loads kernel modules and firmware for Milk-V Duo S AIC8800 UART-based Bluetooth 5. Also attaches the bluetooth driver to the relevant UART at /dev/ttyS4. 
 This process must keep running for Bluetooth to work, so consider using the systemd service. Note that since the Bluetooth and WiFi components are the same chip,
 activating Bluetooth will also necessarily activate WiFi.
 .br
 .SH Booting
-The default debian package configures systemd to run milkv-wifi-init and milkv-bt-init at boot.
+The default debian package configures systemd to run milkv-wireless-init at boot.
 You can enable or disable that behavior the normal systemd way:
 .br
-.I systemctl [enable|disable] milkv-wifi
-.br
-.I systemctl [enable|disable] milkv-bluetooth
+.I systemctl [enable|disable] milkv-wireless
 .br
 If you are not using systemd, you will need to configure your init system to run
 .br
-.I /usr/bin/milkv-wifi-init
-.br
-.I /usr/bin/milkv-bt-init
+.I /usr/bin/milkv-wireless-init

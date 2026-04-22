@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -e
+
+# btlpm depends on the others, in total:
+# aic8800_bsp, then aic8800_fdrv, then aic8800_btlpm get loaded.
+# let the kernel handle load order+timing
+modprobe aic8800_btlpm
+
+rfkill unblock bluetooth
+
+/usr/bin/btattach -B /dev/ttyS4 -S 1500000

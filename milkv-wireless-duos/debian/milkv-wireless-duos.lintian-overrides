@@ -1,3 +1,0 @@
-# lintian complains about our (correct) use of target=basic for USB host mode
-systemd-service-file-refers-to-unusual-wantedby-target basic.target [lib/systemd/system/milkv-wifi.service]
-systemd-service-file-refers-to-unusual-wantedby-target basic.target [lib/systemd/system/milkv-bluetooth.service]

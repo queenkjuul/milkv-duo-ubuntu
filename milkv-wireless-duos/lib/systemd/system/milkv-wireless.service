@@ -3,12 +3,13 @@ Description=Milk-V Duo S WiFi
 DefaultDependencies=no
 Before=network-pre.target
 Wants=network-pre.target
+Before=iwd.service
+Before=bluetooth.service
 After=systemd-modules-load.service local-fs.target milkv-first-boot.service
 
 [Service]
-Type=oneshot
-ExecStart=/usr/bin/milkv-wifi-init
-RemainAfterExit=yes
+Type=simple
+ExecStart=/usr/bin/milkv-wireless-init
 
 [Install]
 WantedBy=multi-user.target
