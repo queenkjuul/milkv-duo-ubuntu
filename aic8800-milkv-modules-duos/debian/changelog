@@ -1,3 +1,9 @@
+aic8800-milkv-modules-duos (1.1.0+7.0.0+qkj4) noble; urgency=medium
+
+  * Sync with kernel updates
+
+ -- Julie Hill <queenkjuul@pm.me>  Wed, 22 Apr 2026 08:37:02 +0000
+
 aic8800-milkv-modules-duos (1.1.0+7.0.0+qkj1) noble; urgency=medium
 
   * Rebuild for 7.0.0
