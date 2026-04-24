@@ -1,0 +1,4 @@
+# netplan complains about 0644
+non-standard-file-perm etc/netplan/90-usb-gadget.yaml 0600 != 0644
+# lintian complains about our (correct) use of target=basic for USB host mode
+systemd-service-file-refers-to-unusual-wantedby-target basic.target [lib/systemd/system/milkv-usb.service]

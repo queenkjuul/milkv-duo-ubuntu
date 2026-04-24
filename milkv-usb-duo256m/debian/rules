@@ -1,0 +1,22 @@
+#!/usr/bin/make -f
+
+%:
+	dh $@
+
+override_dh_fixperms:
+	dh_fixperms
+	chmod +x debian/milkv-usb-duo256m/usr/libexec/milkv/duo256m-usb-*
+	chmod +x debian/milkv-usb-duo256m/usr/bin/*
+
+override_dh_installsystemd:
+	dh_installsystemd --name=milkv-usb --no-stop-on-upgrade
+
+override_dh_installman:
+	dh_installman
+
+clean:
+	rm -rf debian/.debhelper || true
+	rm -rf debian/milkv-usb-duo256m || true
+	rm debian/*debhelper* || true
+	rm debian/*substvars* || true
+	rm debian/files || true

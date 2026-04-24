@@ -1,0 +1,24 @@
+#!/bin/bash
+
+mkdir -p /sys/kernel/config/usb_gadget/duo256m
+cd /sys/kernel/config/usb_gadget/duo256m
+
+echo 0x1d6b > idVendor  # Linux Foundation
+echo 0x0104 > idProduct # Composite Device
+mkdir -p strings/0x409
+echo "420-69-1312" > strings/0x409/serialnumber
+echo "Milk-V" > strings/0x409/manufacturer
+echo "Duo 256M Serial Gadget" > strings/0x409/product
+
+mkdir -p functions/acm.usb0
+
+mkdir -p configs/c.1/strings/0x409
+echo 250 > configs/c.1/bmAttributes # Self-powered
+echo 500 > configs/c.1/MaxPower    # 500mA
+
+ln -s functions/acm.usb0 configs/c.1/
+ln -s configs/c.1 os_desc/c.1
+
+ls /sys/class/udc > UDC
+
+/usr/bin/duo256m-usb-switch device

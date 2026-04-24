@@ -1,0 +1,60 @@
+#!/usr/bin/env python3
+import mmap
+import gpiod  # pyright: ignore[reportMissingImports]
+import sys
+import struct
+
+SYSCON_BASE = 0x03000000
+PHY_CTRL = 0x48
+PHY_DEV = 0xC0
+PHY_HOST = 0x40
+
+
+def set_mode(value):
+    with open("/dev/mem", "r+b") as f:
+        mem = mmap.mmap(f.fileno(), 4096, offset=SYSCON_BASE)
+        mem[PHY_CTRL:PHY_CTRL+4] = struct.pack("<I", value)
+        mem.close()
+
+
+def set_device():
+    gpiod.Chip('gpiochip0').get_line(30).request(
+        consumer="usb-switch", type=gpiod.LINE_REQ_DIR_OUT, default_vals=[0])
+    gpiod.Chip('gpiochip1').get_line(5).request(
+        consumer="usb-switch", type=gpiod.LINE_REQ_DIR_OUT, default_vals=[0])
+    set_mode(PHY_DEV)
+
+
+def set_host():
+    gpiod.Chip('gpiochip0').get_line(30).request(
+        consumer="usb-switch", type=gpiod.LINE_REQ_DIR_OUT, default_vals=[1])
+    gpiod.Chip('gpiochip1').get_line(5).request(
+        consumer="usb-switch", type=gpiod.LINE_REQ_DIR_OUT, default_vals=[1])
+    set_mode(PHY_HOST)
+
+
+def main():
+    if len(sys.argv) != 2 or sys.argv[1] not in ['host', 'device']:
+        print("Usage: duos-usb-switch [host|device]")
+        sys.exit(1)
+
+    mode = sys.argv[1]
+
+    try:
+        if mode == "device":
+            set_device()
+            print("USB switched to DEVICE mode (Type-C)")
+
+        elif mode == "host":
+            # set device mode first; ensures reliable host mode initialization
+            set_device()
+            set_host()
+            print("USB switched to HOST mode (Type-A)")
+
+    except PermissionError:
+        print("Error: Must be run as root (sudo).")
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,36 @@
+#!/bin/bash
+
+mkdir -p /sys/kernel/config/usb_gadget/duo256m
+cd /sys/kernel/config/usb_gadget/duo256m
+
+echo 0x1d6b > idVendor  # Linux Foundation
+echo 0x0104 > idProduct # Composite Device
+echo 0x0100 > bcdDevice
+echo 0x0200 > bcdUSB
+
+mkdir -p strings/0x409
+echo "420-69-1312" > strings/0x409/serialnumber
+echo "Milk-V" > strings/0x409/manufacturer
+echo "Duo 256M CDC-NCM Gadget" > strings/0x409/product
+
+mkdir -p functions/ncm.usb0
+
+MAC_DEV="42:69:be:ef:ca:fe"
+MAC_HOST="42:69:be:ef:fa:ce"
+echo $MAC_DEV > functions/ncm.usb0/dev_addr
+echo $MAC_HOST > functions/ncm.usb0/host_addr
+
+echo 1 > os_desc/use
+echo 0xcd > os_desc/b_vendor_code
+echo "MSFT100" > os_desc/qw_sign
+
+mkdir -p configs/c.1/strings/0x409
+echo "CDC NCM" > configs/c.1/strings/0x409/configuration
+echo 250 > configs/c.1/bmAttributes # Self-powered
+echo 500 > configs/c.1/MaxPower    # 500mA
+ln -s functions/ncm.usb0 configs/c.1/
+ln -s configs/c.1 os_desc/c.1
+
+ls /sys/class/udc > UDC
+
+/usr/bin/duo256m-usb-switch device

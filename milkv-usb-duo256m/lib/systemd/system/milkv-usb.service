@@ -1,0 +1,10 @@
+[Unit]
+Description=Milk-V Duo 256M USB OTG
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/milkv-usb-init
+RemainAfterExit=yes
+
+[Install]
+WantedBy=basic.target

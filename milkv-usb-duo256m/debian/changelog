@@ -1,0 +1,84 @@
+milkv-usb-duo256m (1.0.9) noble; urgency=medium
+
+  * Fix 256M support
+
+ -- Julie Hill <queenkjuul@pm.me>  Fri, 24 Apr 2026 20:35:44 +0000
+
+milkv-usb-duo256m (1.0.9~rc1) noble; urgency=medium
+
+  * First test for 256M
+
+ -- Julie Hill <queenkjuul@pm.me>  Wed, 22 Apr 2026 07:08:10 +0000
+
+milkv-usb-duo256m (1.0.8) noble; urgency=medium
+
+  * Rerelease for noble
+
+ -- Julie Hill <queenkjuul@pm.me>  Fri, 17 Apr 2026 00:51:16 +0000
+
+milkv-usb-duo256m (1.0.7) jammy; urgency=medium
+
+  * Launchpad fix
+
+ -- Julie Hill <queenkjuul@pm.me>  Wed, 01 Apr 2026 01:33:19 +0000
+
+milkv-usb-duo256m (1.0.6) jammy; urgency=medium
+
+  * Fix DHCP range for USB gadget
+
+ -- Julie Hill <queenkjuul@pm.me>  Wed, 01 Apr 2026 01:30:34 +0000
+
+milkv-usb-duo256m (1.0.5) jammy; urgency=medium
+
+  * Launchpad fixes
+
+ -- Julie Hill <queenkjuul@pm.me>  Tue, 31 Mar 2026 23:56:20 +0000
+
+milkv-usb-duo256m (1.0.4) jammy; urgency=medium
+
+  * Launchpad fix
+
+ -- Julie Hill <queenkjuul@pm.me>  Tue, 31 Mar 2026 23:54:10 +0000
+
+milkv-usb-duo256m (1.0.3) jammy; urgency=medium
+
+  * Ditch netplan, fix DHCP, consolidate config
+
+ -- Julie Hill <queenkjuul@pm.me>  Tue, 31 Mar 2026 23:49:11 +0000
+
+milkv-usb-duo256m (1.0.2) jammy; urgency=medium
+
+  * Updated changelog
+
+ -- Julie Hill <queenkjuul@pm.me>  Mon, 30 Mar 2026 05:29:37 +0000
+
+milkv-usb-duo256m (1.0.1) jammy; urgency=medium
+
+  * Launchpad fixes
+
+ -- Julie Hill <queenkjuul@pm.me>  Sun, 29 Mar 2026 23:15:33 +0000
+
+milkv-usb-duo256m (1.0.0) jammy; urgency=medium
+
+  * Tested and verified for Launchpad release
+
+ -- Julie Hill <queenkjuul@pm.me>  Sun, 29 Mar 2026 20:49:06 +0000
+
+milkv-usb-duo256m (0.0.3) jammy; urgency=medium
+
+  * Refactor duos-usb-switch, fix host init bug
+
+ -- Julie Hill <queenkjuul@pm.me>  Sat, 14 Mar 2026 20:09:28 +0000
+
+milkv-usb-duo256m (0.0.2) jammy; urgency=medium
+
+  * Switch to a single systemd unit, add mode helper script
+
+ -- Julie Hill <queenkjuul@pm.me>  Thu, 12 Mar 2026 09:19:00 +0000
+
+milkv-usb-duo256m (0.0.1) jammy; urgency=medium
+
+  * Initial implementation of Milk-V Duo S USB userspace tools and
+    configuration
+
+ -- Julie Hill <queenkjuul@pm.me>  Thu, 12 Mar 2026 03:45:29 +0000

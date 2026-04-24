@@ -1,0 +1,2 @@
+#!/bin/bash
+/usr/bin/duo256m-usb-switch host

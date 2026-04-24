@@ -1,0 +1,13 @@
+Source: milkv-usb-duo256m
+Section: net
+Priority: optional
+Maintainer: Julie Hill <queenkjuul@pm.me>
+Homepage: https://launchpad.net/~queenkjuul/+archive/ubuntu/milkv-duo256m
+Build-Depends: debhelper-compat (= 13)
+Standards-Version: 4.5.1
+
+Package: milkv-usb-duo256m
+Architecture: riscv64
+Depends: ${shlibs:Depends}, ${misc:Depends}, python3:any, python3-libgpiod, systemd, netplan.io
+Description: Enables USB OTG for Milk-V Duo 256M
+ Provides USB-A Host Mode as well as CDC-NCM (Ethernet) and ACM (Serial)
