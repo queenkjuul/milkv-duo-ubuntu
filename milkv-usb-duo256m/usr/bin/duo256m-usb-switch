@@ -17,22 +17,6 @@ def set_mode(value):
         mem.close()
 
 
-def set_device():
-    gpiod.Chip('gpiochip0').get_line(30).request(
-        consumer="usb-switch", type=gpiod.LINE_REQ_DIR_OUT, default_vals=[0])
-    gpiod.Chip('gpiochip1').get_line(5).request(
-        consumer="usb-switch", type=gpiod.LINE_REQ_DIR_OUT, default_vals=[0])
-    set_mode(PHY_DEV)
-
-
-def set_host():
-    gpiod.Chip('gpiochip0').get_line(30).request(
-        consumer="usb-switch", type=gpiod.LINE_REQ_DIR_OUT, default_vals=[1])
-    gpiod.Chip('gpiochip1').get_line(5).request(
-        consumer="usb-switch", type=gpiod.LINE_REQ_DIR_OUT, default_vals=[1])
-    set_mode(PHY_HOST)
-
-
 def main():
     if len(sys.argv) != 2 or sys.argv[1] not in ['host', 'device']:
         print("Usage: duos-usb-switch [host|device]")
@@ -42,13 +26,13 @@ def main():
 
     try:
         if mode == "device":
-            set_device()
+            set_mode(PHY_DEV)
             print("USB switched to DEVICE mode (Type-C)")
 
         elif mode == "host":
             # set device mode first; ensures reliable host mode initialization
-            set_device()
-            set_host()
+            set_mode(PHY_DEV)
+            set_mode(PHY_HOST)
             print("USB switched to HOST mode (Type-A)")
 
     except PermissionError:

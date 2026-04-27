@@ -1,3 +1,9 @@
+milkv-usb-duos (1.0.10) noble; urgency=medium
+
+  * Fix NCM config bug, sync with 256m
+
+ -- Julie Hill <queenkjuul@pm.me>  Mon, 27 Apr 2026 23:50:45 +0000
+
 milkv-usb-duos (1.0.8) noble; urgency=medium
 
   * Rerelease for noble
