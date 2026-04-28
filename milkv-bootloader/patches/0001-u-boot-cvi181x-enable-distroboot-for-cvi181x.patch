@@ -1,7 +1,7 @@
 From 1b43f1692f0cb9d22cdc2fb8172e687831738455 Mon Sep 17 00:00:00 2001
 From: queenkjuul <queenkjuul@pm.me>
 Date: Mon, 30 Mar 2026 06:00:26 +0000
-Subject: [PATCH 1/4] u-boot: cvi181x: enable distroboot for cvi181x
+Subject: [PATCH 1/7] u-boot: cvi181x: enable distroboot for cvi181x
 
 ---
  u-boot-2021.10/include/configs/cv181x-asic.h | 22 +++++++++++++++++---

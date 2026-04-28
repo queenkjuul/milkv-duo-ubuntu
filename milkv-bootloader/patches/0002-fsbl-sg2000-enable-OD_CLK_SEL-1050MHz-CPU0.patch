@@ -1,7 +1,7 @@
 From e3047779a0973f054729eda84ddeb518f6a4ca3f Mon Sep 17 00:00:00 2001
 From: queenkjuul <queenkjuul@pm.me>
 Date: Mon, 6 Apr 2026 02:14:50 +0000
-Subject: [PATCH 2/4] fsbl: sg2000: enable OD_CLK_SEL (1050MHz CPU0)
+Subject: [PATCH 2/7] fsbl: sg2000: enable OD_CLK_SEL (1050MHz CPU0)
 
 ---
  .../sg2000_milkv_duos_musl_riscv64_sd_defconfig                  | 1 +

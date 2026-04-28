@@ -1,0 +1,21 @@
+From 3de08ac24101132fa182001c2e545606d04c1897 Mon Sep 17 00:00:00 2001
+From: queenkjuul <queenkjuul@pm.me>
+Date: Tue, 28 Apr 2026 08:27:24 +0000
+Subject: [PATCH 7/7] u-boot: enable of_libfdt_overlay for sg2002 duo256m
+
+---
+ .../u-boot/cvitek_sg2002_milkv_duo256m_musl_riscv64_sd_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/build/boards/cv181x/sg2002_milkv_duo256m_musl_riscv64_sd/u-boot/cvitek_sg2002_milkv_duo256m_musl_riscv64_sd_defconfig b/build/boards/cv181x/sg2002_milkv_duo256m_musl_riscv64_sd/u-boot/cvitek_sg2002_milkv_duo256m_musl_riscv64_sd_defconfig
+index 4cf362ed3..35c00ac46 100644
+--- a/build/boards/cv181x/sg2002_milkv_duo256m_musl_riscv64_sd/u-boot/cvitek_sg2002_milkv_duo256m_musl_riscv64_sd_defconfig
++++ b/build/boards/cv181x/sg2002_milkv_duo256m_musl_riscv64_sd/u-boot/cvitek_sg2002_milkv_duo256m_musl_riscv64_sd_defconfig
+@@ -38,3 +38,4 @@ CONFIG_SPI=y
+ CONFIG_LZ4=y
+ CONFIG_LZMA=y
+ # CONFIG_TOOLS_LIBCRYPTO is not set
++CONFIG_OF_LIBFDT_OVERLAY=y
+-- 
+2.34.1
+

@@ -1,7 +1,7 @@
 From 75312377eef7b6ed4e283c3ca91ca466b0efbc93 Mon Sep 17 00:00:00 2001
 From: queenkjuul <queenkjuul@pm.me>
 Date: Sun, 12 Apr 2026 23:53:49 +0000
-Subject: [PATCH 4/4] u-boot: enable of_libfdt_overlay
+Subject: [PATCH 4/7] u-boot: enable of_libfdt_overlay
 
 ---
  .../u-boot/cvitek_sg2000_milkv_duos_musl_riscv64_sd_defconfig    | 1 +

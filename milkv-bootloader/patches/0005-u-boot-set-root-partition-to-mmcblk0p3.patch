@@ -1,0 +1,39 @@
+From 287a296923c9c07ef2668495a8d20f7062bbe084 Mon Sep 17 00:00:00 2001
+From: queenkjuul <queenkjuul@pm.me>
+Date: Wed, 22 Apr 2026 23:30:02 +0000
+Subject: [PATCH 5/7] u-boot: set root partition to mmcblk0p3
+
+---
+ u-boot-2021.10/include/configs/cv180x-asic.h | 2 +-
+ u-boot-2021.10/include/configs/cv181x-asic.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/u-boot-2021.10/include/configs/cv180x-asic.h b/u-boot-2021.10/include/configs/cv180x-asic.h
+index 67d1a0e98..dc6d97e3b 100644
+--- a/u-boot-2021.10/include/configs/cv180x-asic.h
++++ b/u-boot-2021.10/include/configs/cv180x-asic.h
+@@ -209,7 +209,7 @@
+ 			#define ROOTARGS "ubi.mtd=ROOTFS ubi.block=0,0"
+ 		#endif /* CONFIG_SKIP_RAMDISK */
+ 	#elif defined(CONFIG_SD_BOOT)
+-		#define ROOTARGS "root=" ROOTFS_DEV " rootwait rw"
++		#define ROOTARGS "root=/dev/mmcblk0p3 rootwait rw"
+ 	#else
+ 		#define ROOTARGS "rootfstype=squashfs rootwait ro root=" ROOTFS_DEV
+ 	#endif
+diff --git a/u-boot-2021.10/include/configs/cv181x-asic.h b/u-boot-2021.10/include/configs/cv181x-asic.h
+index e5328b499..9e3b87f38 100644
+--- a/u-boot-2021.10/include/configs/cv181x-asic.h
++++ b/u-boot-2021.10/include/configs/cv181x-asic.h
+@@ -229,7 +229,7 @@
+             #endif
+ 		#endif /* CONFIG_SKIP_RAMDISK */
+ 	#elif defined(CONFIG_SD_BOOT) || defined(CONFIG_EMMC_SUPPORT)
+-		#define ROOTARGS "root=" ROOTFS_DEV " rootwait rw"
++		#define ROOTARGS "root=/dev/mmcblk0p3 rootwait rw"
+ 	#else
+ 		#define ROOTARGS "rootfstype=squashfs rootwait ro root=" ROOTFS_DEV
+ 	#endif
+-- 
+2.34.1
+

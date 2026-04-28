@@ -1,7 +1,7 @@
 From ea7d32c6d38587f081fdd784a5665b4b45218e05 Mon Sep 17 00:00:00 2001
 From: queenkjuul <queenkjuul@pm.me>
 Date: Sun, 12 Apr 2026 03:28:01 +0000
-Subject: [PATCH 3/4] lib: sbi_illegal_insn: Add emulation for fence.tso
+Subject: [PATCH 3/7] lib: sbi_illegal_insn: Add emulation for fence.tso
 
 ---
  opensbi/include/sbi/riscv_encoding.h |  3 +++

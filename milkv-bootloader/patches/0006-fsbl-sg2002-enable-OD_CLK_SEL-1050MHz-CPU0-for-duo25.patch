@@ -1,0 +1,22 @@
+From 5c1c5e0e01371b7255fa183cbfeaab844740706f Mon Sep 17 00:00:00 2001
+From: queenkjuul <queenkjuul@pm.me>
+Date: Tue, 28 Apr 2026 08:26:54 +0000
+Subject: [PATCH 6/7] fsbl: sg2002: enable OD_CLK_SEL (1050MHz CPU0) for
+ duo256m
+
+---
+ .../sg2002_milkv_duo256m_musl_riscv64_sd_defconfig               | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/build/boards/cv181x/sg2002_milkv_duo256m_musl_riscv64_sd/sg2002_milkv_duo256m_musl_riscv64_sd_defconfig b/build/boards/cv181x/sg2002_milkv_duo256m_musl_riscv64_sd/sg2002_milkv_duo256m_musl_riscv64_sd_defconfig
+index 8e84a09d8..431294420 100644
+--- a/build/boards/cv181x/sg2002_milkv_duo256m_musl_riscv64_sd/sg2002_milkv_duo256m_musl_riscv64_sd_defconfig
++++ b/build/boards/cv181x/sg2002_milkv_duo256m_musl_riscv64_sd/sg2002_milkv_duo256m_musl_riscv64_sd_defconfig
+@@ -20,3 +20,4 @@ CONFIG_BUILDROOT_FS=y
+ CONFIG_ENABLE_FREERTOS=y
+ CONFIG_ENABLE_RTOS_DUMP_PRINT=y
+ CONFIG_DUMP_PRINT_SZ_IDX=17
++CONFIG_OD_CLK_SEL=y
+-- 
+2.34.1
+
