@@ -1,0 +1,44 @@
+#!/usr/bin/env python3
+
+"""
+Milk-V Duo Arduino Upload Daemon
+
+tiny HTTP daemon that works with Avahi to advertise
+a network Arduino upload target, it also needs the
+matching uploadtool in my fork of sophgo-arduino:
+
+https://github.com/queenkjuul/sophgo-arduino
+
+"""
+
+from http.server import BaseHTTPRequestHandler, HTTPServer
+import os
+import subprocess
+
+PORT = 65000
+DL_PATH = "/lib/firmware/arduino.elf"
+MA_PATH = "/usr/bin/milkv-arduino"
+
+class UploadHandler(BaseHTTPRequestHandler):
+    def do_POST(self):
+        content_length_header = self.headers.get('Content-Length')
+        if not content_length_header:
+            self.send_error(411, "Length Required")
+            return
+            
+        content_length = int(content_length_header)
+        post_data = self.rfile.read(content_length)
+        
+        with open(DL_PATH, "wb") as f:
+            f.write(post_data)
+        
+        subprocess.run([MA_PATH, "default", "arduino"])
+        subprocess.run([MA_PATH, "start", "arduino"])
+        
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(b"OK")
+
+if __name__ == "__main__":
+    httpd = HTTPServer(('0.0.0.0', PORT), UploadHandler)
+    httpd.serve_forever()

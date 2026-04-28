@@ -1,0 +1,10 @@
+<?xml version="1.0" standalone='no'?>
+<!DOCTYPE service-group SYSTEM "avahi-service.dtd">
+<service-group>
+  <name replace-wildcards="yes">Milk-V Duo (%h)</name>
+  <service>
+    <type>_arduino._tcp</type>
+    <port>65000</port>
+    <txt-record>board=DUO_DEV</txt-record>
+  </service>
+</service-group>

@@ -1,0 +1,14 @@
+#!/usr/bin/make -f
+
+%:
+	dh $@
+
+override_dh_installsystemd:
+	dh_installsystemd --name=milkv-arduino --no-stop-on-upgrade
+
+clean:
+	rm -rf debian/.debhelper || true
+	rm -rf debian/milkv-arduino || true
+	rm debian/*debhelper* || true
+	rm debian/*substvars* || true
+	rm debian/files || true

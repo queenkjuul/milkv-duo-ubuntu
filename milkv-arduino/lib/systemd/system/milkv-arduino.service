@@ -1,0 +1,9 @@
+[Unit]
+Description=Milk-V Duo Arduino Upload Daemon
+
+[Service]
+ExecStart=/usr/libexec/mdaud
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

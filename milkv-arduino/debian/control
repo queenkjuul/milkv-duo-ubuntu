@@ -1,0 +1,16 @@
+Source: milkv-arduino
+Section: utils
+Priority: optional
+Maintainer: Julie Hill <queenkjuul@pm.me>
+Build-Depends: debhelper-compat (= 13)
+Standards-Version: 4.6.0
+Homepage: https://github.com/queenkjuul/milkv-duo-ubuntu
+Vcs-Git: https://github.com/queenkjuul/milkv-duo-ubuntu.git
+Rules-Requires-Root: no
+
+Package: milkv-arduino
+Architecture: any
+Depends: avahi-daemon, avahi-utils, python3, u-boot-menu, linux-image-milkv, milkv-dt-overlays
+Description: Tool for managing the Milk-V Duo small core
+ Load, start, stop, and reset firmware on the Milk-V Duo
+ C906L small core, such as Arduino or RTOS

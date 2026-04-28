@@ -1,0 +1,5 @@
+usr/bin/* usr/bin/
+usr/libexec/* usr/libexec/
+etc/avahi/services/* etc/avahi/services/
+lib/systemd/system/* lib/systemd/system/
+boot/dtbo/uarts-disable.dtb boot/dtbo/

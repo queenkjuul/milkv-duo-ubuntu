@@ -1,0 +1,23 @@
+milkv-arduino (0.0.4) noble; urgency=medium
+
+  * Fix packaging bug
+
+ -- Julie Hill <queenkjuul@pm.me>  Mon, 27 Apr 2026 04:46:39 +0000
+
+milkv-arduino (0.0.3) noble; urgency=medium
+
+  * New build, sync with GitHub
+
+ -- Julie Hill <queenkjuul@pm.me>  Mon, 27 Apr 2026 04:15:29 +0000
+
+milkv-arduino (0.0.2) noble; urgency=medium
+
+  * Fix some bugs, working implementation
+
+ -- Julie Hill <queenkjuul@pm.me>  Sun, 26 Apr 2026 04:39:02 +0000
+
+milkv-arduino (0.0.1) noble; urgency=medium
+
+  * Initial Release.
+
+ -- Julie Hill <queenkjuul@pm.me>  Sat, 25 Apr 2026 01:37:02 +0000

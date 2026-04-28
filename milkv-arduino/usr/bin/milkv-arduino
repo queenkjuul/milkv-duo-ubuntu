@@ -1,0 +1,119 @@
+#!/bin/bash
+
+set -e
+
+PROC=/sys/class/remoteproc/remoteproc0
+
+COMMAND=$1
+FIRMWARE=$2
+
+[ -z "$COMMAND" ] && COMMAND=help
+
+if [ "$COMMAND" = "help" ]; then
+cat <<'EOF'
+
+milkv-arduino: a tool for managing remoteproc firmware on Milk-V Duo
+
+Usage:
+        milkv-arduino COMMAND [FIRMWARE | FIRMWARE_FILE]
+
+Commands:
+        help
+                You are here.
+
+        status
+                Get status of small core
+
+        restart
+                Restart the small core
+
+        stop
+                Stop the small core
+
+        start
+                Start the small core
+
+        start FIRMWARE
+                Start the named firmware
+
+        install FIRMWARE_FILE
+                Copy firmware file to /lib/firmware
+
+        load FIRMWARE | FIRMWARE_FILE
+                Set named firmware to be loaded next,
+                installs it to /lib/firmware if necessary.
+                Does not restart the core.
+
+        default FIRMWARE
+                Set the named firmware to the default.
+                This links it to "cvirtos.elf" (which the driver loads by default)
+EOF
+exit 0
+fi
+
+restart() {
+        echo "stop" > $PROC/state || true
+        echo "start" > $PROC/state
+}
+
+install() {
+        FILENAME=
+        if [ -f $FIRMWARE ];then
+                FILENAME=$FIRMWARE
+        elif [ -f $PWD/$FIRMWARE ];then
+                FILENAME=$PWD/$FIRMWARE
+        fi
+
+        if [ -z "$FILENAME" ];then
+                echo "File not found!"
+                exit 1
+        fi
+
+        cp $FILENAME /lib/firmware/
+        echo "$FILENAME installed to /lib/firmware"
+}
+
+if [ "$COMMAND" = "status" ];then
+        echo "Current firmware: "$(cat $PROC/firmware)
+        echo "The remote core is: "$(cat $PROC/state)
+elif [ "$COMMAND" = "start" ];then
+        if [ -z "$FIRMWARE" ];then
+                echo "start" > $PROC/state
+        elif [ -f "/lib/firmware/$FIRMWARE" ];then
+                echo "stop" > $PROC/state 2>/dev/null || true
+                echo "$FIRMWARE" > $PROC/firmware
+                echo "start" > $PROC/state
+        elif [ -f "/lib/firmware/$FIRMWARE.elf" ];then
+                echo "stop" > $PROC/state 2>/dev/null || true
+                echo "$FIRMWARE.elf" > $PROC/firmware
+                echo "start" > $PROC/state
+        else
+                echo "File not found!"
+                exit 1
+        fi
+elif [ "$COMMAND" = "stop" ];then
+        echo "stop" > $PROC/state
+elif [ "$COMMAND" = "restart" ];then
+        restart
+elif [ "$COMMAND" = "install" ];then
+        install
+elif [ "$COMMAND" = "load" ];then
+        if [ -f "/lib/firmware/$FIRMWARE" ];then
+                echo "$FIRMWARE" > $PROC/firmware
+        elif [ -f "/lib/firmware/$FIRMWARE.elf" ];then
+                echo "$FIRMWARE.elf" > $PROC/firmware
+        elif [ -n "$FIRMWARE" ];then
+                install
+        fi
+        echo "$FIRMWARE" set to load on next small core start
+elif [ "$COMMAND" = "default" ];then
+        if [ -f "/lib/firmware/$FIRMWARE" ];then
+                ln -sf "/lib/firmware/$FIRMWARE" /lib/firmware/cvirtos.elf
+                echo "cvirtos.elf" > $PROC/firmware
+        elif [ -f "/lib/firmware/$FIRMWARE.elf" ];then
+                ln -sf "/lib/firmware/$FIRMWARE.elf" /lib/firmware/cvirtos.elf
+        fi
+else
+        echo "Invalid command!"
+        exit 1
+fi
