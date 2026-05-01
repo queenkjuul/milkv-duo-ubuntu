@@ -1,7 +1,7 @@
-From 7feaade579c8f714fbb6dd10da8f76893c476d99 Mon Sep 17 00:00:00 2001
+From 20f32529451f59c409a45db10965e4248d3c4957 Mon Sep 17 00:00:00 2001
 From: Joshua Milas <josh.milas@gmail.com>
 Date: Tue, 28 Oct 2025 20:10:49 -0400
-Subject: [PATCH 02/21] arm64: dts: sophgo: add initial Milk-V Duo S board
+Subject: [PATCH 02/37] arm64: dts: sophgo: add initial Milk-V Duo S board
  support
 
 Adds initial arm64 support for the Milk-V Duo S board

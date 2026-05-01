@@ -1,17 +1,35 @@
-Source: linux-milkv-duos
+Source: milkv-linux
 Section: kernel
 Priority: optional
 Maintainer: Julie Hill <queenkjuul@pm.me>
 Build-Depends: debhelper-compat (= 12), bc, bison, flex, kmod, libssl-dev, rsync, u-boot-tools, device-tree-compiler
 
 Package: linux-image-milkv-duos
+Build-Profiles: <duos>
 Architecture: riscv64
 Depends: kmod, u-boot-menu, u-boot-tools
+Provides: linux-image-milkv
 Multi-Arch: foreign
 Description: Linux kernel and modules for Milk-V Duo S
  Pre-built Linux image and all modules for Milk-V Duo S
 
 Package: linux-headers-milkv-duos
+Build-Profiles: <duos>
 Architecture: riscv64
 Description: Linux kernel headers for Milk-V Duo S
  Useful for building out-of-tree modules (such as the AIC8800 WiFi+BT drivers)
+
+Package: linux-image-milkv-duo256m
+Build-Profiles: <duo256m>
+Architecture: riscv64
+Depends: kmod, u-boot-menu, u-boot-tools
+Provides: linux-image-milkv
+Multi-Arch: foreign
+Description: Linux kernel and modules for Milk-V Duo 256M
+ Pre-built Linux image and all modules for Milk-V Duo 256M
+
+Package: linux-headers-milkv-duo256m
+Build-Profiles: <duo256m>
+Architecture: riscv64
+Description: Linux kernel headers for Milk-V Duo 256M
+ Useful for building out-of-tree modules

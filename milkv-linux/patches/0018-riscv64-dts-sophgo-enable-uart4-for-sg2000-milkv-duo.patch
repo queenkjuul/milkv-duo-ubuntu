@@ -1,7 +1,7 @@
-From 14682ad208687e522425ea0de87c4f80f2cf15f0 Mon Sep 17 00:00:00 2001
+From 91af22377d7689c8b82d007bf15c7bf212839995 Mon Sep 17 00:00:00 2001
 From: queenkjuul <queenkjuul@pm.me>
 Date: Sat, 14 Mar 2026 06:16:53 +0000
-Subject: [PATCH 18/21] riscv64: dts: sophgo: enable uart4 for
+Subject: [PATCH 18/37] riscv64: dts: sophgo: enable uart4 for
  sg2000-milkv-duo-s bluetooth
 
 ---

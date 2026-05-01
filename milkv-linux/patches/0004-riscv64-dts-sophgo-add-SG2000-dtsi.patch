@@ -1,7 +1,7 @@
-From fe42516279842d0f2ce5e86769b6c1cd20cdc7ae Mon Sep 17 00:00:00 2001
+From d4ca3441b3114226a61aa345ef7ce19978aa0bbe Mon Sep 17 00:00:00 2001
 From: Joshua Milas <josh.milas@gmail.com>
 Date: Tue, 28 Oct 2025 20:10:51 -0400
-Subject: [PATCH 04/21] riscv64: dts: sophgo: add SG2000 dtsi
+Subject: [PATCH 04/37] riscv64: dts: sophgo: add SG2000 dtsi
 
 Adds sg2000.dtsi on the RISCV side.
 

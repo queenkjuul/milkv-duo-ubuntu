@@ -1,7 +1,7 @@
-From b3106593dc9abb04478d3587454a9ba8a823e5d6 Mon Sep 17 00:00:00 2001
+From af1b5729ff8e384bc5dffa2c415d8d2828c51662 Mon Sep 17 00:00:00 2001
 From: Inochi Amaoto <inochiama@gmail.com>
 Date: Wed, 11 Jun 2025 16:02:00 +0800
-Subject: [PATCH 12/21] net: mdio-mux: Add MDIO mux driver for Sophgo CV1800
+Subject: [PATCH 12/37] net: mdio-mux: Add MDIO mux driver for Sophgo CV1800
  SoCs
 
 Add device driver for the mux driver for Sophgo CV18XX/SG200X

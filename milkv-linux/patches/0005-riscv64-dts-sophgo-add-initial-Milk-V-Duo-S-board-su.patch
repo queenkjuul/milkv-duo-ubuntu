@@ -1,7 +1,7 @@
-From e019198da7308b85941696b519ca907cf63222ef Mon Sep 17 00:00:00 2001
+From 89d846663b7ce234991445e5a9e5b7a056db8f2f Mon Sep 17 00:00:00 2001
 From: Joshua Milas <josh.milas@gmail.com>
 Date: Tue, 28 Oct 2025 20:10:52 -0400
-Subject: [PATCH 05/21] riscv64: dts: sophgo: add initial Milk-V Duo S board
+Subject: [PATCH 05/37] riscv64: dts: sophgo: add initial Milk-V Duo S board
  support
 
 This adds initial riscv support for the Milk-V Duo S board

@@ -1,7 +1,7 @@
-From 8c7af83f989f7a74538b716976eebebe6efb0ed8 Mon Sep 17 00:00:00 2001
+From df95d9a2befd1228c5a6e317fe3272fbb51c7fc9 Mon Sep 17 00:00:00 2001
 From: Haylen Chu <heylenay@4d2.org>
 Date: Mon, 14 Oct 2024 07:38:12 +0000
-Subject: [PATCH 08/21] thermal: cv1800: Add cv1800 thermal driver support
+Subject: [PATCH 08/37] thermal: cv1800: Add cv1800 thermal driver support
 
 Add support for cv1800 SoC integrated thermal sensors. Temperature is
 calculated with a curve-fitted formula. Threshold registers are set as

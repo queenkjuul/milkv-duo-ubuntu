@@ -1,7 +1,7 @@
-From 68feb9f85222057dd79e27382b80bc969d0bca4b Mon Sep 17 00:00:00 2001
+From 0ad52066573dbdc9443caba5d0ab4e42641fb71f Mon Sep 17 00:00:00 2001
 From: queenkjuul <queenkjuul@pm.me>
 Date: Sun, 29 Mar 2026 22:42:52 +0000
-Subject: [PATCH 06/21] riscv64: dts: sophgo: enable full 512MB RAM for Milk-V
+Subject: [PATCH 06/37] riscv64: dts: sophgo: enable full 512MB RAM for Milk-V
  Duo S (sg2000)
 
 ---

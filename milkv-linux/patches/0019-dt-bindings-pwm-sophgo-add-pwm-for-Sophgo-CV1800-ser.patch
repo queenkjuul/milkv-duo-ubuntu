@@ -1,7 +1,7 @@
-From 0ebdfaa480c138caa5b6dbddc172da3264324d72 Mon Sep 17 00:00:00 2001
+From 4b1c6c76c951475063f0cfe0d8c7efe45e3e023f Mon Sep 17 00:00:00 2001
 From: Jingbao Qiu <qiujingbao.dlmu@gmail.com>
 Date: Fri, 9 May 2025 11:45:43 +0200
-Subject: [PATCH 19/21] dt-bindings: pwm: sophgo: add pwm for Sophgo CV1800
+Subject: [PATCH 19/37] dt-bindings: pwm: sophgo: add pwm for Sophgo CV1800
  series SoC
 
 Add devicetree binding to describe the PWM for Sophgo CV1800 SoC.

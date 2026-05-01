@@ -1,7 +1,7 @@
-From eb0ce258349f77a4239bf66751642e55caa6a30c Mon Sep 17 00:00:00 2001
+From 92ca3b9f56471d267d7d83daa72f08d5c08e9c82 Mon Sep 17 00:00:00 2001
 From: Joshua Milas <josh.milas@gmail.com>
 Date: Tue, 28 Oct 2025 20:10:48 -0400
-Subject: [PATCH 01/21] dt-bindings: soc: sophgo: add Milk-V Duo S board
+Subject: [PATCH 01/37] dt-bindings: soc: sophgo: add Milk-V Duo S board
  compatibles
 
 Document the compatible strings for the Milk-V Duo S board [1]

@@ -1,7 +1,7 @@
-From aac81a1b66f85a06733d59a7e36721a0a7c8e8ff Mon Sep 17 00:00:00 2001
+From 5792f6ab1b190578cb0a3fb7b50b2abbebd440ae Mon Sep 17 00:00:00 2001
 From: Haylen Chu <heylenay@4d2.org>
 Date: Mon, 14 Oct 2024 07:38:11 +0000
-Subject: [PATCH 07/21] dt-bindings: thermal: sophgo,cv1800-thermal: Add Sophgo
+Subject: [PATCH 07/37] dt-bindings: thermal: sophgo,cv1800-thermal: Add Sophgo
  CV1800 thermal
 
 Add devicetree binding documentation for thermal sensors integrated in

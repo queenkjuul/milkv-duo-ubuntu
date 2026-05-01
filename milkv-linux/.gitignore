@@ -1,5 +1,9 @@
 debian/linux-image-milkv-duos
 debian/linux-headers-milkv-duos
+debian/linux-image-milkv-duo256m
+debian/linux-headers-milkv-duo256m
+debian/linux-image-milkv-duo
+debian/linux-headers-milkv-duo
 debian/files
 debian/*debhelper*
 debian/.debhelper

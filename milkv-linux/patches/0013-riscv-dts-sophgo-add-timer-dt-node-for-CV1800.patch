@@ -1,7 +1,7 @@
-From ce3289602312f9332cbba7edec0ce48e75915cae Mon Sep 17 00:00:00 2001
+From 8166035a60d48d782b8fc7bb284d886e4b0980eb Mon Sep 17 00:00:00 2001
 From: AnnanLiu <annan.liu.xdu@outlook.com>
 Date: Thu, 25 Jan 2024 17:46:23 +0800
-Subject: [PATCH 13/21] riscv: dts: sophgo: add timer dt node for CV1800
+Subject: [PATCH 13/37] riscv: dts: sophgo: add timer dt node for CV1800
 
 Add the timer device tree node to CV1800 SoC.
 

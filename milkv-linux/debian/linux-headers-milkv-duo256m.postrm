@@ -1,0 +1,11 @@
+#!/bin/sh
+set -e
+
+KVER="@KVER@"
+
+if [ "$1" = "remove" ] || [ "$1" = "purge" ]; then
+    rm -f "/lib/modules/$KVER/build"
+    rm -f "/lib/modules/$KVER/source"
+fi
+
+exit 0

@@ -1,28 +1,88 @@
-linux-milkv-duos (7.0.0~rc5+qkj3) jammy; urgency=medium
+milkv-linux (7.0.0+qkj7~duos) noble; urgency=medium
+
+  * Finalize Duo S config, release qkj7 for Duo S
+
+ -- Julie Hill <queenkjuul@pm.me>  Fri, 01 May 2026 05:59:50 +0000
+
+milkv-linux (7.0.0+qkj7~duo256m) noble; urgency=medium
+
+  * Fix packaging issue, finalize config
+
+ -- Julie Hill <queenkjuul@pm.me>  Tue, 28 Apr 2026 21:47:00 +0000
+
+milkv-linux (7.0.0+qkj6~duo256m) noble; urgency=medium
+
+  * Building for duo256m
+
+ -- Julie Hill <queenkjuul@pm.me>  Fri, 24 Apr 2026 21:57:12 +0000
+
+milkv-linux (7.0.0+qkj5) noble; urgency=medium
+
+  * Fix mailbox config, add sg2002 dts
+
+ -- Julie Hill <queenkjuul@pm.me>  Fri, 24 Apr 2026 20:38:44 +0000
+
+milkv-linux (7.0.0+qkj4) noble; urgency=medium
+
+  * Fix network filesystem config, fix build scripts
+
+ -- Julie Hill <queenkjuul@pm.me>  Tue, 21 Apr 2026 23:54:11 +0000
+
+milkv-linux (7.0.0+qkj3) noble; urgency=medium
+
+  * Re-uploading
+
+ -- Julie Hill <queenkjuul@pm.me>  Tue, 21 Apr 2026 00:39:01 +0000
+
+milkv-linux (7.0.0+qkj2) noble; urgency=medium
+
+  * Tweak packaging scripts, ship dt-bindings headers, update config
+
+ -- Julie Hill <queenkjuul@pm.me>  Fri, 17 Apr 2026 20:28:01 +0000
+
+milkv-linux (7.0.0+qkj1) noble; urgency=medium
+
+  * Sync with upstream 7.0.0
+
+ -- Julie Hill <queenkjuul@pm.me>  Mon, 13 Apr 2026 01:20:09 +0000
+
+milkv-linux (7.0.0~rc7+qkj2) noble; urgency=medium
+
+  * Enable more drivers, upgrade to Noble
+
+ -- Julie Hill <queenkjuul@pm.me>  Sun, 12 Apr 2026 04:24:24 +0000
+
+milkv-linux (7.0.0~rc7+qkj1) jammy; urgency=medium
+
+  * Sync with upstream 7.0-rc7
+
+ -- Julie Hill <queenkjuul@pm.me>  Mon, 06 Apr 2026 01:36:12 +0000
+
+milkv-linux (7.0.0~rc5+qkj3) jammy; urgency=medium
 
   * Fix source packaging
 
  -- Julie Hill <queenkjuul@pm.me>  Fri, 03 Apr 2026 14:54:12 +0000
 
-linux-milkv-duos (7.0.0~rc5+qkj2) jammy; urgency=medium
+milkv-linux (7.0.0~rc5+qkj2) jammy; urgency=medium
 
   * Fix filesystem config
 
  -- Julie Hill <queenkjuul@pm.me>  Wed, 01 Apr 2026 06:32:32 +0000
 
-linux-milkv-duos (7.0.0~rc5+qkj1-1) jammy; urgency=medium
+milkv-linux (7.0.0~rc5+qkj1-1) jammy; urgency=medium
 
   * Clean source package
 
  -- Julie Hill <queenkjuul@pm.me>  Wed, 01 Apr 2026 03:09:52 +0000
 
-linux-milkv-duos (7.0.0~rc5+qkj1) jammy; urgency=medium
+milkv-linux (7.0.0~rc5+qkj1) jammy; urgency=medium
 
   * Rebased from 7.0-rc4 to 7.0-rc5
 
  -- Julie Hill <queenkjuul@pm.me>  Tue, 24 Mar 2026 09:34:35 +0000
 
-linux-milkv-duos (7.0.0~rc4+qkj1) jammy; urgency=medium
+milkv-linux (7.0.0~rc4+qkj1) jammy; urgency=medium
 
   * Initial release.
 

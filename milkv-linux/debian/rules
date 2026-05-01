@@ -1,5 +1,28 @@
 #!/usr/bin/make -f
 
+include /usr/share/dpkg/pkg-info.mk
+
+ifneq (,$(findstring duos,$(DEB_VERSION)))
+	BOARD := duos
+endif
+ifneq (,$(findstring duo256m,$(DEB_VERSION)))
+	BOARD := duo256m
+endif
+
+ifndef BOARD
+	$(error "No board provided via version string!")
+endif
+
+ifeq ($(BOARD),duos)
+	FDT_SRC := sg2000-milkv-duo-s.dtb
+	FDT_TGT := sg2000_milkv_duos_musl_riscv64_sd.dtb
+else ifeq ($(BOARD),duo256m)
+	FDT_SRC := sg2002-milkv-duo-256m.dtb
+	FDT_TGT := sg2002_milkv_duo256m_musl_riscv64_sd.dtb
+endif
+
+export DEB_BUILD_PROFILES=$(BOARD)
+
 BUILD_ARCH := $(shell dpkg-architecture -qDEB_BUILD_ARCH)
 ifeq ($(BUILD_ARCH),riscv64)
 	export CROSS_COMPILE :=
@@ -8,10 +31,12 @@ else
 endif
 
 SRC := $(CURDIR)/linux
-INSTALL_HDR_PATH=$(CURDIR)/debian/linux-headers-milkv-duos/usr/src/linux-headers-$(KERNELRELEASE)
-INSTALL_MOD_PATH=$(CURDIR)/debian/linux-image-milkv-duos
+HDR_PKG := linux-headers-milkv-$(BOARD)
+IMG_PKG := linux-image-milkv-$(BOARD)
+INSTALL_HDR_PATH=$(CURDIR)/debian/$(HDR_PKG)/usr/src/linux-headers-$(KERNELRELEASE)
+INSTALL_MOD_PATH=$(CURDIR)/debian/$(IMG_PKG)
 
-export KERNELRELEASE := 7.0.0-rc5-qkj3
+export KERNELRELEASE := $(shell echo $(DEB_VERSION) | sed 's/~/-/g' | sed 's/+/-/g')
 export ARCH := riscv
 export SRCARCH := $(ARCH)
 export CC := $(CROSS_COMPILE)gcc
@@ -21,23 +46,23 @@ export HOSTCC := gcc
 	dh $@
 
 override_dh_auto_configure:
-	cp milkv-duos_defconfig linux/.config
+	cp milkv-$(BOARD)_defconfig linux/.config
 	$(MAKE) -C $(SRC) olddefconfig
 
 override_dh_auto_build:
-	$(MAKE) -C $(SRC) -j$(shell nproc) LOCALVERSION="" KERNELRELEASE=$(KERNELRELEASE) Image dtbs modules
+	$(MAKE) -C $(SRC) -j$(shell nproc) DTC_FLAGS="-@" LOCALVERSION="" KERNELRELEASE=$(KERNELRELEASE) Image dtbs modules
 
 override_dh_auto_install:
-	mkdir -p debian/linux-image-milkv-duos/boot
-	install -m 644 linux/arch/riscv/boot/Image debian/linux-image-milkv-duos/boot/vmlinuz-$(KERNELRELEASE)
-	mkimage -f milkv-duos.its debian/linux-image-milkv-duos/boot/boot.sd-$(KERNELRELEASE)
+	mkdir -p debian/$(IMG_PKG)/boot
+	install -m 644 linux/arch/riscv/boot/Image debian/$(IMG_PKG)/boot/vmlinuz-$(KERNELRELEASE)
+	mkimage -f milkv-$(BOARD).its debian/$(IMG_PKG)/boot/boot.sd-$(KERNELRELEASE)
 
-	mkdir -p debian/linux-image-milkv-duos/lib/firmware/$(KERNELRELEASE)
-	cp linux/arch/riscv/boot/dts/sophgo/sg2000-milkv-duo-s.dtb debian/linux-image-milkv-duos/lib/firmware/$(KERNELRELEASE)/sg2000_milkv_duos_musl_riscv64_sd.dtb
+	mkdir -p debian/$(IMG_PKG)/lib/firmware/$(KERNELRELEASE)
+	cp linux/arch/riscv/boot/dts/sophgo/$(FDT_SRC) debian/$(IMG_PKG)/lib/firmware/$(KERNELRELEASE)/$(FDT_TGT)
 
 	$(MAKE) -C $(SRC) LOCALVERSION="" KERNELRELEASE=$(KERNELRELEASE) INSTALL_MOD_PATH=$(INSTALL_MOD_PATH) modules_install
-	rm -f $(CURDIR)/debian/linux-image-milkv-duos/lib/modules/$(KERNELRELEASE)/build
-	rm -f $(CURDIR)/debian/linux-image-milkv-duos/lib/modules/$(KERNELRELEASE)/source
+	rm -f $(CURDIR)/debian/$(IMG_PKG)/lib/modules/$(KERNELRELEASE)/build
+	rm -f $(CURDIR)/debian/$(IMG_PKG)/lib/modules/$(KERNELRELEASE)/source
 
 	cd $(SRC) && \
 	MAKE=$(MAKE) \
@@ -48,16 +73,22 @@ override_dh_auto_install:
 	./scripts/package/install-extmod-build \
 	$(INSTALL_HDR_PATH)
 
+	mkdir -p $(INSTALL_HDR_PATH)/include/dt-bindings
+	cp \
+		linux/arch/riscv/boot/dts/sophgo/cv18xx-reset.h \
+		linux/arch/riscv/boot/dts/sophgo/cv180x-dmamux.h \
+		$(INSTALL_HDR_PATH)/include/dt-bindings/
+
 	cd $(CURDIR)
 
-	mkdir -p $(CURDIR)/debian/linux-headers-milkv-duos/lib/modules/$(KERNELRELEASE)
-	ln -sf /usr/src/linux-headers-$(KERNELRELEASE) $(CURDIR)/debian/linux-headers-milkv-duos/lib/modules/$(KERNELRELEASE)/build
+	mkdir -p $(CURDIR)/debian/$(HDR_PKG)/lib/modules/$(KERNELRELEASE)
+	ln -sf /usr/src/linux-headers-$(KERNELRELEASE) $(CURDIR)/debian/$(HDR_PKG)/lib/modules/$(KERNELRELEASE)/build
 
 override_dh_installdeb:
 	dh_installdeb
-	sed -i "s/@KVER@/$(KERNELRELEASE)/g" debian/linux-image-milkv-duos/DEBIAN/postinst
-	sed -i "s/@KVER@/$(KERNELRELEASE)/g" debian/linux-image-milkv-duos/DEBIAN/postrm
-	sed -i "s/@KVER@/$(KERNELRELEASE)/g" debian/linux-headers-milkv-duos/DEBIAN/postrm
+	sed -i "s/@KVER@/$(KERNELRELEASE)/g" debian/$(IMG_PKG)/DEBIAN/postinst
+	sed -i "s/@KVER@/$(KERNELRELEASE)/g" debian/$(IMG_PKG)/DEBIAN/postrm
+	sed -i "s/@KVER@/$(KERNELRELEASE)/g" debian/$(HDR_PKG)/DEBIAN/postrm
 
 override_dh_strip:
 	dh_strip -Xusr/src/linux-headers-$(KERNELRELEASE)
@@ -70,8 +101,10 @@ override_dh_shlibdeps:
 
 clean:
 	dh_clean
-	rm -rf debian/linux-headers-milkv-duos || true
 	rm -rf debian/linux-image-milkv-duos || true
+	rm -rf debian/linux-headers-milkv-duos || true
+	rm -rf debian/linux-image-milkv-duo256m || true
+	rm -rf debian/linux-headers-milkv-duo256m || true
 	rm -rf debian/.debhelper || true
 	rm debian/*debhelper* || true
 	rm debian/*substvars || true

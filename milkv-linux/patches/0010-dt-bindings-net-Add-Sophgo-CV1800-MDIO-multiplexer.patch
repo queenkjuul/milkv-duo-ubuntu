@@ -1,7 +1,7 @@
-From cd2a3a1c2cbba324f144c927bafb8095eb611577 Mon Sep 17 00:00:00 2001
+From 8e6b820ac6b1ced41670c7080d139f94741d89de Mon Sep 17 00:00:00 2001
 From: Inochi Amaoto <inochiama@gmail.com>
 Date: Wed, 11 Jun 2025 16:01:59 +0800
-Subject: [PATCH 10/21] dt-bindings: net: Add Sophgo CV1800 MDIO multiplexer
+Subject: [PATCH 10/37] dt-bindings: net: Add Sophgo CV1800 MDIO multiplexer
 
 The Sophgo CV1800 uses an internal MDIO bus multiplexer to handle the
 internal phy and external phy. The internal phy is always on MDIO bus

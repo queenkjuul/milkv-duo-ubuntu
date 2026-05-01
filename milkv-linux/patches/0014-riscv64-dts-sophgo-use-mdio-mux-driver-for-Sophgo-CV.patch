@@ -1,7 +1,7 @@
-From 60feb5194a5d369f8cda45372449c8569dadfdad Mon Sep 17 00:00:00 2001
+From 6be8d6e368220b97b15637e9b8889e12fd81fe16 Mon Sep 17 00:00:00 2001
 From: queenkjuul <queenkjuul@pm.me>
 Date: Tue, 10 Mar 2026 06:08:10 +0000
-Subject: [PATCH 14/21] riscv64: dts: sophgo: use mdio-mux driver for Sophgo
+Subject: [PATCH 14/37] riscv64: dts: sophgo: use mdio-mux driver for Sophgo
  CV18xx ethernet
 
 ---
@@ -9,10 +9,10 @@ Subject: [PATCH 14/21] riscv64: dts: sophgo: use mdio-mux driver for Sophgo
  1 file changed, 7 insertions(+), 8 deletions(-)
 
 diff --git a/arch/riscv/boot/dts/sophgo/cv180x.dtsi b/arch/riscv/boot/dts/sophgo/cv180x.dtsi
-index c6489c2e99e3..379b60f0e71a 100644
+index 58a693d1fba0..649dfd4d6c91 100644
 --- a/arch/riscv/boot/dts/sophgo/cv180x.dtsi
 +++ b/arch/riscv/boot/dts/sophgo/cv180x.dtsi
-@@ -57,19 +57,18 @@ rst: reset-controller@3003000 {
+@@ -85,19 +85,18 @@ rst: reset-controller@3003000 {
  			#reset-cells = <1>;
  		};
  
@@ -37,7 +37,7 @@ index c6489c2e99e3..379b60f0e71a 100644
  
  				internal_ephy: phy@0 {
  					compatible = "ethernet-phy-ieee802.3-c22";
-@@ -77,10 +76,10 @@ internal_ephy: phy@0 {
+@@ -105,10 +104,10 @@ internal_ephy: phy@0 {
  				};
  			};
  

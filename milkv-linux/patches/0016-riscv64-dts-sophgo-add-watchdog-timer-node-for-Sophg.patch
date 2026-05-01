@@ -1,7 +1,7 @@
-From e5907fc0fdda7ae63de4bc07fea0118f693ffda8 Mon Sep 17 00:00:00 2001
+From ebd90a66254a80995a3c73b66d52a27d307f1bfd Mon Sep 17 00:00:00 2001
 From: queenkjuul <queenkjuul@pm.me>
 Date: Thu, 12 Mar 2026 05:51:30 +0000
-Subject: [PATCH 16/21] riscv64: dts: sophgo: add watchdog timer node for
+Subject: [PATCH 16/37] riscv64: dts: sophgo: add watchdog timer node for
  Sophgo cv180x
 
 ---
@@ -9,10 +9,10 @@ Subject: [PATCH 16/21] riscv64: dts: sophgo: add watchdog timer node for
  1 file changed, 9 insertions(+)
 
 diff --git a/arch/riscv/boot/dts/sophgo/cv180x.dtsi b/arch/riscv/boot/dts/sophgo/cv180x.dtsi
-index 379b60f0e71a..f27f6657ddd9 100644
+index 649dfd4d6c91..285c1f26afe4 100644
 --- a/arch/riscv/boot/dts/sophgo/cv180x.dtsi
 +++ b/arch/riscv/boot/dts/sophgo/cv180x.dtsi
-@@ -57,6 +57,15 @@ rst: reset-controller@3003000 {
+@@ -85,6 +85,15 @@ rst: reset-controller@3003000 {
  			#reset-cells = <1>;
  		};
  

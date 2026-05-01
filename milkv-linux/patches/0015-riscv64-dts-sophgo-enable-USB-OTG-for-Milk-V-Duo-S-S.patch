@@ -1,7 +1,7 @@
-From 1155dca6316cc11acb6ce980c7e80a5494b02a60 Mon Sep 17 00:00:00 2001
+From b755bac3c2b7bd2bca8c306b52885052b4a5a631 Mon Sep 17 00:00:00 2001
 From: queenkjuul <queenkjuul@pm.me>
 Date: Wed, 11 Mar 2026 22:08:39 +0000
-Subject: [PATCH 15/21] riscv64: dts: sophgo: enable USB OTG for Milk-V Duo S
+Subject: [PATCH 15/37] riscv64: dts: sophgo: enable USB OTG for Milk-V Duo S
  (Sophgo SG2000)
 
 ---

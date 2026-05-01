@@ -1,7 +1,7 @@
-From 428d0526c009f8439aadfcfc2579ff94bdbbaf4d Mon Sep 17 00:00:00 2001
+From 3cf62f78f7bda7bc972247924a186da9d36ff126 Mon Sep 17 00:00:00 2001
 From: queenkjuul <queenkjuul@pm.me>
 Date: Wed, 18 Mar 2026 01:03:51 +0000
-Subject: [PATCH 09/21] riscv: dts: sophgo: add cv180x thermal sensor dts node
+Subject: [PATCH 09/37] riscv: dts: sophgo: add cv180x thermal sensor dts node
 
 ---
  arch/riscv/boot/dts/sophgo/cv180x.dtsi | 8 ++++++++
