@@ -27,7 +27,7 @@ echo "MSFT100" > os_desc/qw_sign
 mkdir -p configs/c.1/strings/0x409
 echo "CDC NCM" > configs/c.1/strings/0x409/configuration
 echo 0xc0 > configs/c.1/bmAttributes # Self-powered
-echo 500 > configs/c.1/MaxPower    # 500mA
+echo 1000 > configs/c.1/MaxPower    # 1000mA
 ln -s functions/ncm.usb0 configs/c.1/
 ln -s configs/c.1 os_desc/c.1
 

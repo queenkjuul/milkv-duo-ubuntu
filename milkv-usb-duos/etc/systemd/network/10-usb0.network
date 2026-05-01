@@ -5,11 +5,12 @@ Name=usb0
 [Network]
 LinkLocalAddressing=ipv6
 Address=192.168.42.1/24
+Gateway=192.168.42.137
 DHCPServer=yes
 IPForward=yes
 
 [DHCPServer]
-PoolOffset=1
-PoolSize=100
+PoolOffset=136
+PoolSize=1
 EmitDNS=yes
 DNS=1.1.1.1
