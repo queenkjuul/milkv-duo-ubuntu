@@ -114,7 +114,6 @@ Packages are hosted on Ubuntu PPAs:
 - SPI NOR / NAND Flash - I only have SD-based Duo boards to test with.
 - SPI and UART complain about DMA. DMA works for I2S/Audio, but not for SPI/UART. Can't work out why not.
 - USB mode switching has to be done via a hacky userspace script - the mainline USB drivers won't do dual-role correctly
-- Full kernel pinmuxing (kernel can use devices on the default pinmux, but fails to set properly defined pinmux values)
 - [Full Arduino support](#arduino-support)
 
 ## Using the System
