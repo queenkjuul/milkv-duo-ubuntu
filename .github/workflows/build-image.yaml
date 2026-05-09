@@ -61,7 +61,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: milkv-duos-img-${{ github.run_id }}
-          path: images/ubuntu-milkv-${{ inputs.board }}.img
+          path: images/ubuntu-noble-milkv-${{ inputs.board }}.img
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
