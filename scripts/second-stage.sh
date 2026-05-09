@@ -2,20 +2,26 @@
 
 BOARD=$1
 HNAME=$2
-PASSWORD=$3
 
 [ -z $BOARD ] && { echo "No board!"; exit 1; }
 [ -z $HNAME ] && { echo "No hostname!"; exit 1; }
-[ -z $PASSWORD ] && { echo "No password!"; exit 1; }
 
+# Core system
 PACKAGES="util-linux haveged openssh-server systemd kmod \
-  conntrack ebtables ethtool iproute2 curl python3-pip \
-  iptables mount socat iputils-ping vim dhcpcd5 neofetch sudo chrony \
-  linux-image-milkv-$BOARD aic8800-milkv-firmware aic8800-milkv-modules-$BOARD \
-  milkv-usb-$BOARD milkv-pinmux-$BOARD milkv-wireless-$BOARD \
-  nano git python-is-python3 impala bluetui" # this line optional, add or change your own here
+  conntrack nftables ethtool iproute2 curl python3-pip \
+  mount socat iputils-ping vim neofetch sudo chrony fake-hwclock \
+  milkv-dt-overlays milkv-arduino \
+  linux-image-milkv-$BOARD milkv-usb-$BOARD milkv-pinmux-$BOARD"
+# Board-specific
+DUOS_PACKAGES="aic8800-milkv-firmware aic8800-milkv-modules-$BOARD milkv-wireless-$BOARD"
+# User - season to taste
+USER_PACKAGES="nano git python-is-python3 impala bluetui sacad devmem2"
 
-mv /queenkjuul-ubuntu-milkv-$BOARD.gpg /etc/apt/trusted.gpg.d/queenkjuul-ubuntu-milkv-$BOARD.gpg
+if [ "$BOARD" = "duos" ]; then
+  PACKAGES="$PACKAGES $DUOS_PACKAGES"
+fi
+
+mv /queenkjuul-ubuntu-milkv.gpg /etc/apt/trusted.gpg.d/queenkjuul-ubuntu-milkv-$BOARD.gpg
 chmod 644 /etc/apt/trusted.gpg.d/queenkjuul-ubuntu-milkv-$BOARD.gpg
 apt-get update || { echo "failed to update packages"; exit 1; }
 
@@ -28,12 +34,12 @@ TARGET_PACKAGES=
 for pkg in $PACKAGES; do
   [[ " $LOCAL_PACKAGES " =~ " $pkg " ]] || TARGET_PACKAGES="$TARGET_PACKAGES $pkg"
 done
-echo "Installing $TARGET_PACKAGES"
+echo "Installing $TARGET_PACKAGES $USER_PACKAGES"
 apt-get install \
   --no-install-recommends \
   --allow-downgrades \
   -y \
-  $LOCAL_DEBS $TARGET_PACKAGES
+  $LOCAL_DEBS $TARGET_PACKAGES $USER_PACKAGES
 
 [ -f /milkv-pinmux-$BOARD_*.deb ] \
   && apt-get install -y /milkv-pinmux-$BOARD*.deb \
@@ -87,14 +93,13 @@ sysfs		/sys		sysfs	defaults	0	0
 EOF
 echo "OK"
 
-echo -n "Setting up root credentials..."
-echo "root:$PASSWORD" | chpasswd
+echo -n "Enabling SSH login for root..."
 sed -i "s/#PermitRootLogin.*/PermitRootLogin yes/g" /etc/ssh/sshd_config
 echo "OK"
 
 echo -n "Preparing system for first boot..."
 rm -f /etc/ssh/ssh_host_*_key*
-mkdir -p /usr/libexec/milkv 
+mkdir -p /usr/libexec/milkv
 mv /first-boot.sh /usr/libexec/milkv/first-boot.sh
 cat >/lib/systemd/system/milkv-first-boot.service <<EOF
 [Unit]
@@ -116,9 +121,16 @@ ExecStart=/usr/libexec/milkv/first-boot.sh
 WantedBy=basic.target
 EOF
 systemctl enable milkv-first-boot.service
-# Ubuntu-specific; versions newer than 22.04 won't run on cv18xx, 
+# Ubuntu-specific; versions newer than 24.04 won't run on cv18xx, 
 # we don't want to encourage users to upgrade.
 rm /etc/update-motd.d/91-release-upgrade
+if [ "$BOARD" = "duos" ]; then
+# pwmchip0/pwm0 is hard-wired internally to the buck converter
+# if you try to write to it via sysfs, you crash the whole board
+cat >/etc/udev/rules.d/99-pwm0-protect.rules <<EOF
+SUBSYSTEM=="pwm", KERNELS=="3060000.pwm", ACTION=="change", RUN+="/bin/sh -c 'if [ -d /sys%p/pwm0 ]; then chmod 400 /sys%p/pwm0/period /sys%p/pwm0/enable /sys%p/pwm0/duty_cycle; fi'"
+EOF
+fi
 echo "OK."
 
 echo -n "Cleaning up..."

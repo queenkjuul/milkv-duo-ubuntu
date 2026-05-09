@@ -3,10 +3,6 @@
 echo "First Boot: Setting Hostname"
 echo "$HNAME" > /etc/hostname
 
-echo -n "First Boot: Update ld cache..."
-ldconfig
-echo "OK."
-
 echo "First Boot: Generating SSH keys"
 ssh-keygen -A
 
