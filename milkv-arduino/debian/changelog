@@ -1,3 +1,9 @@
+milkv-arduino (0.1.3) noble; urgency=medium
+
+  * Add IPv6 support
+
+ -- Julie Hill <queenkjuul@pm.me>  Sat, 09 May 2026 01:18:31 +0000
+
 milkv-arduino (0.1.2) noble; urgency=medium
 
   * Restrict to local IPs, prep for publish

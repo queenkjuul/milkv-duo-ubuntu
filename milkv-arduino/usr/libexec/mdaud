@@ -56,6 +56,13 @@ class UploadHandler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(b"OK")
 
+class HTTPServer_IP46(HTTPServer):
+        address_family = socket.AF_INET6
+
+        def server_bind(self):
+            self.socket.setsockopt(socket.IPPROTO_IPV6, socket.IPV6_V6ONLY, 0)
+            super().server_bind()
+
 if __name__ == "__main__":
-    httpd = HTTPServer(('0.0.0.0', PORT), UploadHandler)
+    httpd = HTTPServer_IP46(('::', PORT), UploadHandler)
     httpd.serve_forever()
