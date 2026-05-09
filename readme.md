@@ -2,6 +2,8 @@
 
 Full-featured, general-purpose Ubuntu 24.04 distribution for Milk-V Duo S and Duo 256M SBCs, built on the latest mainline 7.0 Linux kernel. Now with **Arduino!***
 
+For a more stripped-down, DIY system, take a look at [my work on building Alpine images](https://github.com/SeimoDev/cv1812h-linux-6.18-port) which use my same mainline Linux patchset (if you want).
+
 <img width="1280" height="836" alt="image" src="https://github.com/user-attachments/assets/6a2d1765-dc41-4cb2-b000-97cf976d3f32" />
 
 *The Duo 64M model has insufficient memory to run Ubuntu, as `apt` requires more memory than is available. I do have a Duo 64M, though, so I will still publish kernel configuration and device trees for it eventually.*
@@ -44,15 +46,18 @@ I am a software engineer, with extensive Linux experience, but I am new to the w
     - [Arduino Support](#arduino-support)
       - [Instructions](#instructions)
       - [Arduino Feature Support Matrix](#arduino-feature-support-matrix)
-  - [Notes](#notes)
+      - [Security](#security)
+  - [Usage Notes](#usage-notes)
   - [Building the System](#building-the-system)
     - [Setup](#setup)
     - [Docker](#docker)
     - [Basic Customization](#basic-customization)
+      - [Package Customization](#package-customization)
     - [Advanced - Building Yourself](#advanced---building-yourself)
       - [Manual Build Sequence](#manual-build-sequence)
-  - [Goals](#goals)
-    - [Stretch Goals](#stretch-goals)
+        - [Building Wireless Drivers for a new Kernel](#building-wireless-drivers-for-a-new-kernel)
+  - [Stretch Goals](#stretch-goals)
+  - [Manifesto](#manifesto)
   - [Credits](#credits)
   - [Setup](#setup-1)
   - [Before anything else](#before-anything-else)
@@ -308,17 +313,31 @@ See the instructions in [the sophgo-arduino repo](./sophgo-arduino/README.md)
 
 Additionally, while the kernel does succeed at loading firmware at boot, the small core does not actually run the sketch at boot. You need to restart the small core after booting Linux for it to work.
 
-## Notes
+#### Security
+
+Look, as far as I'm concerned, it should go without saying, but I am going to say it:
+
+**Do not connect your device to the Internet directly when using the provided Arduino software! That means: Do not plug an ethernet directly between your modem and your Duo!**
+
+If you have a firewall (router) between your modem and your Duo, you're probably fine. Nothing that is exposed is particularly dangerous. An open port allows uploading arbitary binary files to exactly one physical location, `/lib/firmware/arduino.elf`. This binary is run by default ONLY by the secondary core of the Duo. It has no access to networking, and at least as of current year (2026) it also can't even access serial ports or SPI or I2C or anything else.
+
+As of May 2026 (ahem) you have far greater risks from the Linux kernel itself than from leaving this Arduino service alive on the internet*
+
+*Maybe. I think. I'm not an expert. Also, what a time to be alive, eh?
+
+Anyway, in general: Don't worry about it. Unless you're doing something weird! In which case, you better know what you're doing. And by that I mean, run `systemctl disable milkv-arduino` and manually copy compiled sketches to `/lib/firmware` and use the `milkv-arduino` CLI tool to manage them. 
+
+The `milkv-arduino` CLI tool is itself safe. It's only the `milkv-arduino` systemd service which carries any risk.
+
+## Usage Notes
 
 - While USB-C Serial is available, it doesn't initialize until late in the boot process, and does not display the kernel console. You will need to use the UART0 pins and connect to an adapter to troubleshoot boot problems.
-- Board has soft-reset but not soft-poweroff. `systemctl poweroff` will halt the system, but it remains powered as long as power is supplied.
+- Board has soft-reset but not soft-poweroff. `systemctl poweroff` will halt the system, but it remains powered as long as power is supplied. This generally means any attached USB devices do not deactivate at poweroff, though this hasn't been thoroughly studied.
 - On Duo S, `PWM0` (`pwmchip0/pwm0`) is hard-wired internally to the buck converter. Note how on the pinout diagram, only `PWM1-PWM15` are listed. Linux, however, will expose all 4 pins on `pwmchip0`, and if you write new values to the `pwm0` sysfs nodes, you will crash the entire board. I have shipped a udev rule which revokes write permissions from `pwm0` when it is detected, but there's nothing stopping you `chmod +w`'ing it. You shouldn't. You've been warned.
 
 ## Building the System
 
 Building the image from pre-built packages can be done on any system by using the Docker image. Building packages from source is only officially supported on Ubuntu 22.04, just like the duo-buildroot-sdk.
-
-__Be warned that the setup script will mangle your `/etc/apt/sources.list` file because it assumes it is running in either Docker or a VM. Can't say I didn't warn you!__
 
 __These instructions are incomplete and out of date! Goodspeed you, brave comrade!__
 
@@ -336,49 +355,51 @@ If you plan on modifying the source packages (building your own kernel/modules, 
 git clone --recursive https://github.com/queenkjuul/milkv-duo-ubuntu
 ```
 
+Note, though, that a full recursive clone will be many gigabytes, and a shallow clone may only be several gigabytes.
+
+You can alternatively grab only the submodules you need after a shallow clone with:
+
+    git submodule update --init <path/to/module>
+
 ### Docker
 
 Once the repo is cloned, you can create the Docker image:
 
 ```sh
 cd scripts
-docker build -t milkv-duo .
+docker build -t milkv-duo-ubuntu .
 cd .. # all other commands expect to be run from the project root
 ```
 
 Commands are then run from the project root directory like this:
 
-`docker run -v $PWD:/project -it milkv-duo ./<COMMAND>`
+`docker run -v $PWD:/project -it milkv-duo-ubuntu ./<COMMAND>`
 
 So in the below examples, to run `build.sh -c`, you would actually run:
 
-`docker run -v $PWD:/project -it milkv-duo ./build.sh -c`
+`docker run -v $PWD:/project -it milkv-duo-ubuntu ./build.sh -c`
 
 or for `scripts/compile.sh`:
 
-`docker run -v $PWD:/root -it milkv-duo ./scripts/compile.sh`
+`docker run -v $PWD:/root -it milkv-duo-ubuntu ./scripts/compile.sh`
 
 ### Basic Customization
 
-You can run `build.sh -c` to set the system hostname, root password, and CPU frequency mode. You can modify `scripts/second-stage.sh` before running `build.sh` to customize more advanced settings, like DNS servers, ZRAM, `fstab`, and more. Lastly, you can modify `scripts/first-boot.sh` to modify the first-boot behavior, but this isn't recommended. Any `.deb` files in the project root directory get installed in the target system as well.
+You can run `build.sh -c` to set the system hostname, root password, and CPU frequency mode. You can modify `scripts/second-stage.sh` before running `build.sh` to customize more advanced settings, like DNS servers, ZRAM, `fstab`, and more. Lastly, you can modify `scripts/first-boot.sh` to modify the first-boot behavior, but this isn't recommended.
+
+#### Package Customization
+
+To simply add Ubuntu packages, modify `second-stage.sh` before building the image. To install custom packages, or modified versions of system packages, simply but the `.deb` files in the root of the repo (alongside `build.sh`). Any `.deb` file in the repo root will be installed, even if a newer version is available online. This guarantees that if you modify a package in this repo and build it, your version will be built into the image, not my version.
 
 ### Advanced - Building Yourself
 
-After making changes to the source packages in this repo, you can use `scripts/compile.sh` to rebuild all of the source and binary packages, including the kernel, excluding `extras/`. It calls `debuild` twice per package - once to generate a source package, and again to generate a binary `.deb`. None of these packages are signed by default.
+After making changes to the source packages in this repo, you can use `scripts/compile.sh` to rebuild all of the source and binary packages [NOT TESTED RECENTLY], including the kernel, excluding `extras/`. It calls `debuild` twice per package - once to generate a source package, and again to generate a binary `.deb`. None of these packages are signed by default.
 
 When the build script is run, any and all `.deb` files in the project root will be installed in the target system.
 
 Note that because the `extras/` source packages are a directory down from the root, they are not built by `compile.sh` nor installed automatically after their `.deb` packages are generated. These are third-party projects that I include here unmodified solely to simplify distribution of their cross-compiled binary packages. Build instructions for them are not provided.
 
 #### Manual Build Sequence
-
-If you are not using the `compile.sh` script, but you are making modifications to the kernel and/or drivers, it is important to note the proper sequence for building them:
-
-1. build the kernel packages
-2. install the resulting `linux-headers-milkv-duos_*.deb` package *in the host system*
-3. build the wireless modules in `aic8800-milkv-modules-duos`
-
-Note that when using docker, all 3 steps must be run in the same session in order to work.
 
 The two general build commands for each package are:
 
@@ -389,20 +410,26 @@ Following the general order of `kernel -> install generated headers package -> b
 
 When you run `debuild` within one of the modules, the output will be placed in the repo root directory. When you run `./build.sh`, all `*.deb` files in the root directory will be installed automatically - just make sure all the ones you want are built ahead of time.
 
-## Goals
+##### Building Wireless Drivers for a new Kernel
 
-This is not your typical embedded distribution. Because the Duo S features full-size Ethernet and USB-A ports, in addition to all the typical embedded I/O, the kernel build for this distro features dozens, if not hundreds, of device drivers (built as modules): Game controllers, MIDI devices, HID, serial, printers, modems, sensors, most anything you can think of.
+If you are not using the `compile.sh` script, but you are making modifications to the kernel and/or drivers, it is important to note the proper sequence for building them:
 
-The idea is that if you have a USB-A port, you oughtta be able to use it. The Duo S isn't really powerful enough to be a desktop, but I can envision some fun ways to incorporate it as a Linux Gadget or a mini server or a media player or whatever. I also want this to be a good entrypoint for beginners, because this board has a lot of potential.
+1. build the kernel packages
+2. install the resulting `linux-headers-milkv-duos_*.deb` package *on the host system*
+3. build the wireless modules in `aic8800-milkv-modules-duos`
 
-You can always reconfigure the kernel to remove what you don't want. The actual kernel without any modules loaded is 9MB,
+Note that when using docker, all 3 steps must be run in the same container in order to work. That is, you must install the generated header package *inside the docker container that builds the drivers* if you want the built drivers to work on the target system.
 
-The Milk-V SDK usage patterns are in some places replicated (hardware state is largely managed by shell scripts, USB NCM mode is the default) but the specific instructions are different.
+## Stretch Goals
 
-### Stretch Goals
+- ~~Device tree overlay management package: a tool to compile + add to u-boot + update u-boot, with source and examples~~ oh no baby, we did it :sunglasses:
+- ~~Arduino firmware support: ideally, the board shows up as an IP firwmare target for the Arduino IDE, but I'd settle for a shell tool to easily move firmware to `/lib/firmrware/cvirtos.elf` and then restart the little core.~~ oh honey, we did that too :grin:
 
-- Device tree overlay management package: a tool to compile + add to u-boot + update u-boot, with source and examples
-- Arduino firmware support: ideally, the board shows up as an IP firwmare target for the Arduino IDE, but I'd settle for a shell tool to easily move firmware to `/lib/firmrware/cvirtos.elf` and then restart the little core.
+## Manifesto
+
+Look, far as I'm concerned, the Duo S kicks the shit out of the Pi Zero. HDMI Smaychdeemeye. Ubuntu Server on the Duo S is where it's at. I love the other Duos too, no shade, the S is just like, what I always wished the Zero was. Wifi, ethernet, USB (**C**, even!), built-in analog audio; this thing rocks, it deserves an easy-to-use, modern, hit-the-ground-running Ubuntu image. I'm really happy with how the mainline kernel runs with an Ubuntu system on the Duo. I'm really happy that you can one-click upload Arduino sketches. I'm really happy that so many Sophgo drivers have been mainlined that this project is possible, and I can support nearly all of the board's features. 
+
+I am anxiously watching [this project to get the NPU running on mainline Linux](https://github.com/SeimoDev/cv1812h-linux-6.18-port) and may myself yet embark on a misguided attempt to get other parts of the vendor code running (the H265 codec being the holy grail for me) but I cannot make any promises.
 
 ## Credits
 
