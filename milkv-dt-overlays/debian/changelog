@@ -1,3 +1,9 @@
+milkv-dt-overlays (0.1.1) noble; urgency=medium
+
+  * Fix Duo 64/Duo S pinctrl includes
+
+ -- Julie Hill <queenkjuul@pm.me>  Mon, 04 May 2026 00:30:01 +0000
+
 milkv-dt-overlays (0.1.0) noble; urgency=medium
 
   * Add pinmux macros, rename pins to match charts, add cpp step to compiler

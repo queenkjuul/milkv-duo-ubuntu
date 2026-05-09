@@ -8,7 +8,7 @@
 #ifndef _DT_BINDINGS_PINCTRL_SG2000_H
 #define _DT_BINDINGS_PINCTRL_SG2000_H
 
-#include <dt-bindings/pinctrl/pinctrl-cv18xx.h>
+#include <pinctrl-cv18xx.h>
 
 #define PINPOS(row, col)			\
 	((((row) - 'A' + 1) << 8) + ((col) - 1))

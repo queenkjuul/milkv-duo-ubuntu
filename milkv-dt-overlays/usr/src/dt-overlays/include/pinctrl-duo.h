@@ -8,7 +8,7 @@
 #ifndef _DT_BINDINGS_PINCTRL_CV1800B_H
 #define _DT_BINDINGS_PINCTRL_CV1800B_H
 
-#include <dt-bindings/pinctrl/pinctrl-cv18xx.h>
+#include <pinctrl-cv18xx.h>
 
 #define GP0                23 // PIN_IIC0_SCL
 #define GP1                24 // PIN_IIC0_SDA
