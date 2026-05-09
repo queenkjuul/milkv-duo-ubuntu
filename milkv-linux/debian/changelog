@@ -1,3 +1,21 @@
+milkv-linux (7.0.0+qkj10~duo256m) noble; urgency=medium
+
+  * kconfig optimizations, enable zstd firmware for Ubuntu
+
+ -- Julie Hill <queenkjuul@pm.me>  Thu, 07 May 2026 03:15:24 +0000
+
+milkv-linux (7.0.0+qkj9~duo256m) noble; urgency=medium
+
+  * Add some Alpine Sophgo config options, fix ZRAM, fix AppArmor
+
+ -- Julie Hill <queenkjuul@pm.me>  Thu, 07 May 2026 02:00:02 +0000
+
+milkv-linux (7.0.0+qkj8~duo256m) noble; urgency=medium
+
+  * Add more ethernet and wifi drivers
+
+ -- Julie Hill <queenkjuul@pm.me>  Fri, 01 May 2026 06:55:07 +0000
+
 milkv-linux (7.0.0+qkj7~duos) noble; urgency=medium
 
   * Finalize Duo S config, release qkj7 for Duo S
