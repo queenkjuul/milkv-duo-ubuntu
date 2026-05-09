@@ -16,6 +16,7 @@ import os
 import subprocess
 import hashlib
 import ipaddress
+import socket
 
 PORT = 65000
 DL_PATH = "/lib/firmware/arduino.elf"
@@ -24,7 +25,7 @@ MA_PATH = "/usr/bin/milkv-arduino"
 class UploadHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         inbound_ip = ipaddress.ip_address(self.client_address[0])
-        if not (client_address.is_private or client_address.is_loopback):
+        if not (inbound_ip.is_private or inbound_ip.is_loopback):
             self.send_error(403, "Invalid sender address! Only LAN addresses are valid")
             return
 

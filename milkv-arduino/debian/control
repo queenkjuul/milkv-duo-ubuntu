@@ -9,7 +9,7 @@ Vcs-Git: https://github.com/queenkjuul/milkv-duo-ubuntu.git
 Rules-Requires-Root: no
 
 Package: milkv-arduino
-Architecture: any
+Architecture: riscv64
 Depends: avahi-daemon, avahi-utils, python3, u-boot-menu, linux-image-milkv, milkv-dt-overlays
 Description: Tool for managing the Milk-V Duo small core
  Load, start, stop, and reset firmware on the Milk-V Duo
