@@ -6,4 +6,5 @@ if [ "$1" = "configure" ]; then
   if dpkg -s linux-image-milkv-duo256m >/dev/null 2>&1; then
     dtbo enable uarts-disable.dtb
   fi
+  systemctl enable milkv-arduino.service
 fi

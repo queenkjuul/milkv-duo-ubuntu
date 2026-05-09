@@ -1,3 +1,21 @@
+milkv-arduino (0.1.2) noble; urgency=medium
+
+  * Restrict to local IPs, prep for publish
+
+ -- Julie Hill <queenkjuul@pm.me>  Fri, 08 May 2026 08:57:33 +0000
+
+milkv-arduino (0.1.1) noble; urgency=medium
+
+  * Fix packaging bug
+
+ -- Julie Hill <queenkjuul@pm.me>  Fri, 08 May 2026 07:09:19 +0000
+
+milkv-arduino (0.1.0) noble; urgency=medium
+
+  * Add checksum validation
+
+ -- Julie Hill <queenkjuul@pm.me>  Fri, 08 May 2026 00:17:21 +0000
+
 milkv-arduino (0.0.4) noble; urgency=medium
 
   * Fix packaging bug

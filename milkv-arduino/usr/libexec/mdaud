@@ -14,6 +14,8 @@ https://github.com/queenkjuul/sophgo-arduino
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import os
 import subprocess
+import hashlib
+import ipaddress
 
 PORT = 65000
 DL_PATH = "/lib/firmware/arduino.elf"
@@ -21,20 +23,35 @@ MA_PATH = "/usr/bin/milkv-arduino"
 
 class UploadHandler(BaseHTTPRequestHandler):
     def do_POST(self):
+        inbound_ip = ipaddress.ip_address(self.client_address[0])
+        if not (client_address.is_private or client_address.is_loopback):
+            self.send_error(403, "Invalid sender address! Only LAN addresses are valid")
+            return
+
         content_length_header = self.headers.get('Content-Length')
         if not content_length_header:
             self.send_error(411, "Length Required")
             return
-            
+
+        header_hash = self.headers.get('X-Binary-Hash')
+        if not header_hash:
+            self.send_error(411, "Hash Required")
+            return
+
         content_length = int(content_length_header)
         post_data = self.rfile.read(content_length)
-        
+
+        data_hash = hashlib.md5(post_data).hexdigest()
+        if data_hash != header_hash:
+            self.send_error(400, "Invalid Checksum")
+            return
+
         with open(DL_PATH, "wb") as f:
             f.write(post_data)
-        
+
         subprocess.run([MA_PATH, "default", "arduino"])
         subprocess.run([MA_PATH, "start", "arduino"])
-        
+
         self.send_response(200)
         self.end_headers()
         self.wfile.write(b"OK")
