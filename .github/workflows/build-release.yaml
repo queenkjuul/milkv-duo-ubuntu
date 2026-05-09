@@ -1,20 +1,22 @@
-name: Milk-V Duo - Build Image
+name: Milk-V Duo - Build Release
 
 on:
   workflow_dispatch:
     inputs:
-      board:
-        description: 'Board to target'
-        type: choice
-        default: 'duos'
-        options:
-        - 'duos'
-        - 'duo256m'
+      is_prerelease:
+        description: 'Prerelease'
+        type: boolean
+        required: true
+        default: true
       compile:
         description: 'Compile from source'
         type: boolean
         required: true
         default: false
+      tag_name:
+        description: 'Tag (optional)'
+        required: false
+        type: string
 
 jobs:
   build:
@@ -41,10 +43,18 @@ jobs:
             git clone https://github.com/pengutronix/genimage.git
             ./scripts/setup.sh
             [ "${{ inputs.compile }}" = "true" ] && ./scripts/compile.sh
-            ./build.sh ${{ inputs.board }}
+            ./build.sh duo256m
+            ./build.sh duos
 
-      - name: Upload Image as Artifact
-        uses: actions/upload-artifact@v4
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
         with:
-          name: milkv-${{ inputs.board }}-img-${{ github.run_id }}
-          path: images/ubuntu-noble-milkv-${{ inputs.board }}.img
+          tag_name: ${{ inputs.tag_name || format('build-{0}', github.run_id) }}
+          files: |
+            images/ubuntu-noble-milkv-duo256m.img
+            images/ubuntu-noble-milkv-duos.img
+          prerelease: ${{ inputs.is_prerelease }}
+          name: "Ubuntu 24.04 for Milk-V Duo Series: ${{ inputs.tag_name || github.ref_name }}"
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
