@@ -58,7 +58,7 @@ ln -snf ../run/lock /var/lock
 echo "OK."
 
 echo -n "Setting up network..."
-cat >/etc/systemd/network/20-wired.network <<EOF
+cat >/lib/systemd/network/80-eth0.network <<EOF
 [Match]
 Name=eth0
 
