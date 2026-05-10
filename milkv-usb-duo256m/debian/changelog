@@ -1,3 +1,9 @@
+milkv-usb-duo256m (1.0.12) noble; urgency=medium
+
+  * Fix config paths
+
+ -- Julie Hill <queenkjuul@pm.me>  Sat, 09 May 2026 22:34:15 +0000
+
 milkv-usb-duo256m (1.0.11) noble; urgency=medium
 
   * Finalize duo256m USB mode switch script
