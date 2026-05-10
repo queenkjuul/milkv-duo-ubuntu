@@ -33,36 +33,21 @@ I am a software engineer, with extensive Linux experience, but I am new to the w
     - [Default Password](#default-password)
     - [First Boot](#first-boot)
     - [USB](#usb)
-      - [Changing the USB gadget IP address](#changing-the-usb-gadget-ip-address)
-      - [Windows Internet Connection Sharing](#windows-internet-connection-sharing)
+    - [Additional Information](#additional-information)
     - [Pin Configuration](#pin-configuration)
+      - [`duo-pinmux` CLI tool from Milk-V](#duo-pinmux-cli-tool-from-milk-v)
+      - [Additional Information](#additional-information-1)
     - [WiFi + BT](#wifi--bt)
-      - [Usage](#usage)
-      - [Power](#power)
-      - [Boot Warnings](#boot-warnings)
-    - [CPU Clock Speed](#cpu-clock-speed)
+      - [Additional Information](#additional-information-2)
     - [Bootloader](#bootloader)
-      - [Kernel Upgrades](#kernel-upgrades)
+      - [Additional Information](#additional-information-3)
     - [Arduino Support](#arduino-support)
-      - [Instructions](#instructions)
+      - [Setup Instructions](#setup-instructions)
       - [Arduino Feature Support Matrix](#arduino-feature-support-matrix)
-      - [Security](#security)
-  - [Usage Notes](#usage-notes)
-  - [Building the System](#building-the-system)
-    - [Setup](#setup)
-    - [Docker](#docker)
-    - [Basic Customization](#basic-customization)
-      - [Package Customization](#package-customization)
-    - [Advanced - Building Yourself](#advanced---building-yourself)
-      - [Manual Build Sequence](#manual-build-sequence)
-        - [Building Wireless Drivers for a new Kernel](#building-wireless-drivers-for-a-new-kernel)
+  - [Building and Customizing](#building-and-customizing)
   - [Stretch Goals](#stretch-goals)
   - [Manifesto](#manifesto)
   - [Credits](#credits)
-  - [Setup](#setup-1)
-  - [Before anything else](#before-anything-else)
-  - [Creating the rootfs](#creating-the-rootfs)
-  - [Flashing](#flashing)
 
 ## Pre-Built Image Downloads
 
@@ -152,56 +137,19 @@ You can switch to Host Mode (USB-A) with:
 
 `milkv-usb-mode host` and then reboot. There are systemd services that handle the initialization. If you disable those, use `milkv-usb-init` to set things up after boot.
 
-#### Changing the USB gadget IP address
+### Additional Information
 
-__Note that these instructions differ from the Milk-V docs__
-
-You can edit `/etc/systemd/network/10-usb0.network` to set the IP. You should keep the `/24` unless you know what you're doing. The USB gadget gets the fist IP (`192.168.42.1`) and each client (so likely just the one host PC) will get a random address in the  `192.168.42.x` range.
-
-```yaml
-      addresses:
-        - 192.168.42.1/24
-```
-
-#### Windows Internet Connection Sharing
-
-1. Click Network icon in system tray on the Windows host
-2. Click "Network and Internet Settings"
-3. Click "Change Adapter Options"
-4. Right-click your default internet interface (probably your Wifi or Ethernet, but if you use Hyper-V, then you want "vEthernet (Hyper-V LAN Bridge)"), go to Properties
-5. Go to the Sharing tab
-6. Click the "Allow other network users to connect to the internet..." checkbox
-7. In the drop-down, select your USB NCM connection
-8.  Click OK
-9.  Right-click the USB NCM connection and go to Properties
-10. Select "Internet Protocol Version 4 (TCP/IP)" and click Properties
-11. Change the IP address to `192.168.42.137` and click OK
-
-Note that the network must be set as "Private" on the Windows side for this to work. You can check from an administor powershell:
-
-```powershell
-Get-NetworkConnectionProfile
-```
-
-If it is not `NetworkCategory: Private`, then run
-
-```powershell
-Set-NetConnectionProfile -InterfaceIndex XX -NetworkCategory Private
-``` 
-
-where `XX` is the index listed from `Get-NetworkConnectionProfile`
+See [The Wiki](https://github.com/queenkjuul/milkv-duo-ubuntu/wiki/USB) for additional iformation on USB.
 
 ### Pin Configuration
 
+#### `duo-pinmux` CLI tool from Milk-V
+
 `duo-pinmux`, as provided by Milk-V, is also included in the system image. You can use it to reconfigure pins - all of the Duo S's hardware is exposed to the kernel via the device tree, but some of it may not work until you set the pins correctly. For example, to use `I2C4` via pins `B20` and `B21`, you must set pins `B20` and `B21` appropriately with `duo-pinmux`. After that, the `/dev/i2c-*` devices will work (you may need to `modprobe i2c-dev` first). Note that just because the `/dev/*` node appears, doesn't mean it works - you need to set the pins correctly. Only `/dev/ttyS0` (the boot console) and `/dev/ttyS4` (the bluetooth UART) are guaranteed to work at boot.
 
-**For Duo 256M,** UART1 and UART3 are disabled in the devicetree, because in theory those UARTs are assigned to Arduino (though, uh, they don't currently seem to work). You can use a device tree overlay to re-enable them, see [`milkv-dt-overlays`](./milkv-dt-overlays/).
+#### Additional Information
 
-Refer to the pinout chart below - the labels don't map 1:1 with the actual command options - use `duo-pinmux -l` for all of the valid options.
-
-__WARNING:__ the below chart has some mistakes, trust the output of duo-pinmux over the graphic. At minimum, I2C4_SDA and I2C4_SCL are swapped.
-
-![chart of the duo s pinout](https://milkv.io/duo-s/duos-pinout.webp)
+See [the wiki](https://github.com/queenkjuul/milkv-duo-ubuntu/wiki/Pin-Configuration) for more information on setting pin configuration.
 
 ### WiFi + BT
 
@@ -220,59 +168,11 @@ systemctl disable milkv-wifi
 systemctl disable milkv-bluetooth
 ```
 
-#### Usage
+You can run `milkv-wifi-setup` to set up a wireless network connection.
 
-The base system installs `iwd` for WiFi management. A nice helper script is provided, `milkv-wifi-setup`, which you can use to connect to a network. `milkv-wifi-setup` also offers the option to apply your WiFi settings at boot, and if chosen, will persist the WiFi MAC address as well (this is normally randomly generated at each boot).
+#### Additional Information
 
-The repo also provides the `impala` and `bluetui` packages for friendly wireless management over SSH connections.
-
-My personal recommendation is to use `milkv-wifi-setup` initially, as it works well in a serial terminal and sets up the `iwd` daemon and WiFi MAC address. Then, once you're connected to WiFi and logged in over SSH, switch to `impala` - it's much more versatile, it looks nicer, and it's just as easy to use.
-
-#### Power
-
-Note that since both Bluetooth and Wifi are on the same chip and use the same driver, both will be enabled at the hardware level when either script is enabled. The difference is that the Bluetooth service starts an `hciattach` session as a daemon and loads the `bluetooth` module, the WiFi service does not. Disable both services (or prevent loading the `aic8800_bsp` driver) to keep the wireless chip powered off.
-
-#### Boot Warnings
-
-There are some false alarm errors on boot when using the wireless chip, but they don't affect operation. Here's a normal, working boot log:
-
-```
-[   22.026658] mmc1: tuning execution failed: -110
-[   22.026691] mmc1: error -110 whilst initialising SDIO card
-[   23.562645] aicbsp: Device init failed, powering down
-[   32.314462] aicbsp: sdio_err:<aicwf_sdio_bus_pwrctl,1498>: bus down
-[   33.042238] ieee80211 phy0:
-[   33.042238] *******************************************************
-[   33.042238] ** CAUTION: USING PERMISSIVE CUSTOM REGULATORY RULES **
-[   33.042238] *******************************************************
-[   35.749812] Bluetooth: hci0: Opcode 0x2003 failed: -110
-```
-
-Despite all of these dmesg errors, this boot did produce a working Wifi+BT system. Don't be fooled.
-
-(actually, I fixed most of this - if you're seeing errors and it works, then just live with it, but my most recent published code should show fewer warnings)
-
-### CPU Clock Speed
-
-[Despite these SoCs being advertised as 1GHz CPUs, the stock bootloader configuration sets the clock to 850MHz.](https://www.eevblog.com/forum/microcontrollers/a-couple-questions-about-milk-v-duo-boards/msg5555591/#msg5555591) The FSBL code has an "overdrive" mode which is not enabled by default and which increases the CPU speed to 1050MHz. In this distribution, a patch has been applied to the FSBL configuration which enables this flag, so the default images (starting with 7.0-rc7) will run at 1050MHz out of the box. I've found this to be perfectly stable, and without the chip getting hot.
-
-FSBL builds of both varieties will be made available, so you can choose which you want, but the pre-built images will ship the overdrive mode.
-
-The clock is set via the register at `0x3002908`. Note that these values are bitmasks, not integers. I haven't actually worked out the exact formula for changing values, but these 4 are named explicitly in the code:
-
-```ini
-0x00408101=800MHz
-0x00448101=850MHz # vendor default
-0x05508101=1000MHz
-0x05548101=1050MHz # this distribution default
-```
-
-You can thus change the CPU speed on the fly from userspace using `devmem2`:
-
-```sh
-# e.g. devmem2 0x3002908 w 0x05548101
-devmem2 0x3002908 w <SPEED>
-```
+See [the wiki](https://github.com/queenkjuul/milkv-duo-ubuntu/wiki/WiFi-+-BT) for more information.
 
 ### Bootloader
 
@@ -285,140 +185,33 @@ The system is set up with `/boot` on the root ext4 filesystem (`mmcblk0p3`), and
 
 U-Boot supports the ethernet port, and distroboot supports network booting, and it does appear to work (ethernet initializes, and it fetches an address from DHCP, and it attempts to fetch a file from TFTP, but I don't have TFTP set up to test further). You still need an SD card with the modified `fip.bin` in the device for this to work.
 
-#### Kernel Upgrades
+#### Additional Information
 
-When the SD card is generated, a `boot.sd` is generated from the kernel in the image, and installed to `/boot/vendor`. Kernel upgrades installed via APT will generate new `boot.sd` images, stored at `/boot/boot.sd-$KERNELVERSION` - they are not automatically installed to `/boot/vendor` (`mmcblk0p1`) - after you have confirmed that the new kernel works correctly by booting it, you can replace the old `/boot/vendor/boot.sd` with the new one. Because `boot.sd` is provided primarily as a failsafe should "distroboot" fail, the previous known-good `boot.sd` is left in place until you manually replace it.
+See [the wiki](https://github.com/queenkjuul/milkv-duo-ubuntu/wiki/Bootloader) for mor information.
 
 ### Arduino Support
 
 This distribution's Linux kernel supports the pending Remoteproc and Mailbox drivers for the sg200x chips. This means that Linux is capable of uploading firmware to the "little core" and booting it. Unfortunately, there are issues getting all of the hardware working completely. GPIO-based proofs-of-concept do work, though, so you can toggle LEDs to your heart's content.
 
-**For Duo 256M,** UART1 and UART3 are disabled in the devicetree, because in theory those UARTs are assigned to Arduino (though, uh, they don't currently seem to work). You can use a device tree overlay to re-enable them, see [`milkv-dt-overlays`](./milkv-dt-overlays/).
+#### Setup Instructions
 
-#### Instructions
-
-See the instructions in [the sophgo-arduino repo](./sophgo-arduino/README.md)
+Be sure to see [the wiki](https://github.com/queenkjuul/milkv-duo-ubuntu/wiki/Arduino) for setup instructions and important notes.
 
 #### Arduino Feature Support Matrix
 
-| Feature | Status              |
-| ------- | ------------------- |
-| GPIO    | Works! :sunglasses: |
-| UART    | Known Broken :sob:  |
-| I2C     | Untested            |
-| SPI     | Untested            |
-| PWM     | Untested            |
-| ADC     | Untested            |
-| Mailbox | Known Broken :sob:  |
+| Feature | Duo 256M            | Duo S               |
+| ------- | ------------------- | ------------------- |
+| GPIO    | Works! :sunglasses: | Works! :sunglasses: |
+| UART    | Known Broken :sob:  | Untested            |
+| I2C     | Untested            | Untested (I2C4 only)|
+| SPI     | Untested            | Unsupported         |
+| PWM     | Untested            | Works! :sunglasses: |
+| ADC     | Untested            | Unsupported         |
+| Mailbox | Known Broken :sob:  | Known Broken :sob:  |
 
-Additionally, while the kernel does succeed at loading firmware at boot, the small core does not actually run the sketch at boot. You need to restart the small core after booting Linux for it to work.
+## Building and Customizing
 
-#### Security
-
-Look, as far as I'm concerned, it should go without saying, but I am going to say it:
-
-**Do not connect your device to the Internet directly when using the provided Arduino software! That means: Do not plug an ethernet directly between your modem and your Duo!**
-
-If you have a firewall (router) between your modem and your Duo, you're probably fine. Nothing that is exposed is particularly dangerous. An open port allows uploading arbitary binary files to exactly one physical location, `/lib/firmware/arduino.elf`. This binary is run by default ONLY by the secondary core of the Duo. It has no access to networking, and at least as of current year (2026) it also can't even access serial ports or SPI or I2C or anything else.
-
-As of May 2026 (ahem) you have far greater risks from the Linux kernel itself than from leaving this Arduino service alive on the internet*
-
-*Maybe. I think. I'm not an expert. Also, what a time to be alive, eh?
-
-Anyway, in general: Don't worry about it. Unless you're doing something weird! In which case, you better know what you're doing. And by that I mean, run `systemctl disable milkv-arduino` and manually copy compiled sketches to `/lib/firmware` and use the `milkv-arduino` CLI tool to manage them. 
-
-The `milkv-arduino` CLI tool is itself safe. It's only the `milkv-arduino` systemd service which carries any risk.
-
-## Usage Notes
-
-- While USB-C Serial is available, it doesn't initialize until late in the boot process, and does not display the kernel console. You will need to use the UART0 pins and connect to an adapter to troubleshoot boot problems.
-- Board has soft-reset but not soft-poweroff. `systemctl poweroff` will halt the system, but it remains powered as long as power is supplied. This generally means any attached USB devices do not deactivate at poweroff, though this hasn't been thoroughly studied.
-- On Duo S, `PWM0` (`pwmchip0/pwm0`) is hard-wired internally to the buck converter. Note how on the pinout diagram, only `PWM1-PWM15` are listed. Linux, however, will expose all 4 pins on `pwmchip0`, and if you write new values to the `pwm0` sysfs nodes, you will crash the entire board. I have shipped a udev rule which revokes write permissions from `pwm0` when it is detected, but there's nothing stopping you `chmod +w`'ing it. You shouldn't. You've been warned.
-
-## Building the System
-
-Building the image from pre-built packages can be done on any system by using the Docker image. Building packages from source is only officially supported on Ubuntu 22.04, just like the duo-buildroot-sdk.
-
-__These instructions are incomplete and out of date! Goodspeed you, brave comrade!__
-
-### Setup
-
-If you plan on only basic customizations (hostname, password, extra APT packages, etc) then only a shallow clone is necessary:
-
-```sh
-git clone https://github.com/queenkjuul/milkv-duo-ubuntu
-```
-
-If you plan on modifying the source packages (building your own kernel/modules, patching the provided userspace scripts, etc) then you should probably do a full recursive clone:
-
-```sh
-git clone --recursive https://github.com/queenkjuul/milkv-duo-ubuntu
-```
-
-Note, though, that a full recursive clone will be many gigabytes, and a shallow clone may only be several gigabytes.
-
-You can alternatively grab only the submodules you need after a shallow clone with:
-
-    git submodule update --init <path/to/module>
-
-### Docker
-
-Once the repo is cloned, you can create the Docker image:
-
-```sh
-cd scripts
-docker build -t milkv-duo-ubuntu .
-cd .. # all other commands expect to be run from the project root
-```
-
-Commands are then run from the project root directory like this:
-
-`docker run -v $PWD:/project -it milkv-duo-ubuntu ./<COMMAND>`
-
-So in the below examples, to run `build.sh -c`, you would actually run:
-
-`docker run -v $PWD:/project -it milkv-duo-ubuntu ./build.sh -c`
-
-or for `scripts/compile.sh`:
-
-`docker run -v $PWD:/root -it milkv-duo-ubuntu ./scripts/compile.sh`
-
-### Basic Customization
-
-You can run `build.sh -c` to set the system hostname, root password, and CPU frequency mode. You can modify `scripts/second-stage.sh` before running `build.sh` to customize more advanced settings, like DNS servers, ZRAM, `fstab`, and more. Lastly, you can modify `scripts/first-boot.sh` to modify the first-boot behavior, but this isn't recommended.
-
-#### Package Customization
-
-To simply add Ubuntu packages, modify `second-stage.sh` before building the image. To install custom packages, or modified versions of system packages, simply but the `.deb` files in the root of the repo (alongside `build.sh`). Any `.deb` file in the repo root will be installed, even if a newer version is available online. This guarantees that if you modify a package in this repo and build it, your version will be built into the image, not my version.
-
-### Advanced - Building Yourself
-
-After making changes to the source packages in this repo, you can use `scripts/compile.sh` to rebuild all of the source and binary packages [NOT TESTED RECENTLY], including the kernel, excluding `extras/`. It calls `debuild` twice per package - once to generate a source package, and again to generate a binary `.deb`. None of these packages are signed by default.
-
-When the build script is run, any and all `.deb` files in the project root will be installed in the target system.
-
-Note that because the `extras/` source packages are a directory down from the root, they are not built by `compile.sh` nor installed automatically after their `.deb` packages are generated. These are third-party projects that I include here unmodified solely to simplify distribution of their cross-compiled binary packages. Build instructions for them are not provided.
-
-#### Manual Build Sequence
-
-The two general build commands for each package are:
-
-1. `debuild -S -sa -us -uc` - builds the source package
-2. `debuild -ariscv64 -b -us -uc` - builds the binary package
-
-Following the general order of `kernel -> install generated headers package -> build modules -> build everything else` should get you up and running.
-
-When you run `debuild` within one of the modules, the output will be placed in the repo root directory. When you run `./build.sh`, all `*.deb` files in the root directory will be installed automatically - just make sure all the ones you want are built ahead of time.
-
-##### Building Wireless Drivers for a new Kernel
-
-If you are not using the `compile.sh` script, but you are making modifications to the kernel and/or drivers, it is important to note the proper sequence for building them:
-
-1. build the kernel packages
-2. install the resulting `linux-headers-milkv-duos_*.deb` package *on the host system*
-3. build the wireless modules in `aic8800-milkv-modules-duos`
-
-Note that when using docker, all 3 steps must be run in the same container in order to work. That is, you must install the generated header package *inside the docker container that builds the drivers* if you want the built drivers to work on the target system.
+See [the wiki](https://github.com/queenkjuul/milkv-duo-ubuntu/wiki/Building-the-System)
 
 ## Stretch Goals
 
@@ -442,143 +235,3 @@ Credits below this line are from the original README.md of the repo I forked ([c
 ![DO NOT THE CAT!!!](https://github.com/Mnux9)
 
 ---
-
-## Setup
-
-1. Ubuntu 22.04 LTS installed on a virtual machine
-2. Setup ![duo-buildroot-sdk](https://github.com/milkv-duo/duo-buildroot-sdk#prepare-the-compilation-environment) on your machine
-
-## Before anything else
-
-```bash
-# We need to enable a few modules in the kernel configuration before we can continue, so:
-nano ~/duo-buildroot-sdk/build/boards/cv180x/cv1800b_milkv_duo_sd/linux/cvitek_cv1800b_milkv_duo_sd_defconfig
-
-# and add at the end:
-CONFIG_CGROUPS=y
-CONFIG_CGROUP_FREEZER=y
-CONFIG_CGROUP_PIDS=y
-CONFIG_CGROUP_DEVICE=y
-CONFIG_CPUSETS=y
-CONFIG_PROC_PID_CPUSET=y
-CONFIG_CGROUP_CPUACCT=y
-CONFIG_PAGE_COUNTER=y
-CONFIG_MEMCG=y
-CONFIG_CGROUP_SCHED=y
-CONFIG_NAMESPACES=y
-CONFIG_OVERLAY_FS=y
-CONFIG_AUTOFS4_FS=y
-CONFIG_SIGNALFD=y
-CONFIG_TIMERFD=y
-CONFIG_EPOLL=y
-CONFIG_IPV6=y
-CONFIG_FANOTIFY
-
-# optional (enable zram):
-CONFIG_ZSMALLOC=y
-CONFIG_ZRAM=y
-```
-
-Important: to reduce ram usage follow point n.2 of the ![faq](https://github.com/milkv-duo/duo-buildroot-sdk/tree/develop#faqs),
-to increase the rootfs partition size you can edit ```duo-buildroot-sdk/milkv/genimage-milkv-duo.cfg```
-at line 16 replace ```size = 256M``` with ```size = 1G``` or higher as desired
-then follow the ![instructions](https://github.com/milkv-duo/duo-buildroot-sdk#step-by-step-compilation) to manually compile buildroot and the kernel and pack it.
-
-## Creating the rootfs
-
-```bash
-# install prerequisites
-sudo apt install debootstrap qemu qemu-user-static binfmt-support dpkg-cross --no-install-recommends
-# generate minimal bootstrap rootfs
-sudo debootstrap --arch=riscv64 --foreign jammy ./temp-rootfs http://ports.ubuntu.com/ubuntu-ports
-# chroot into the rootfs we just created
-sudo chroot temp-rootfs /bin/bash
-# run 2nd stage of deboostrap
-/debootstrap/debootstrap --second-stage
-# add package sources
-cat >/etc/apt/sources.list <<EOF
-deb http://ports.ubuntu.com/ubuntu-ports jammy main restricted
-
-deb http://ports.ubuntu.com/ubuntu-ports jammy-updates main restricted
-
-deb http://ports.ubuntu.com/ubuntu-ports jammy universe
-deb http://ports.ubuntu.com/ubuntu-ports jammy-updates universe
-
-deb http://ports.ubuntu.com/ubuntu-ports jammy multiverse
-deb http://ports.ubuntu.com/ubuntu-ports jammy-updates multiverse
-
-deb http://ports.ubuntu.com/ubuntu-ports jammy-backports main restricted universe multiverse
-
-deb http://ports.ubuntu.com/ubuntu-ports jammy-security main restricted
-deb http://ports.ubuntu.com/ubuntu-ports jammy-security universe
-deb http://ports.ubuntu.com/ubuntu-ports jammy-security multiverse
-EOF
-# update and install some packages
-apt-get update
-apt-get install --no-install-recommends -y util-linux haveged openssh-server systemd kmod initramfs-tools conntrack ebtables ethtool iproute2 iptables mount socat ifupdown iputils-ping vim dhcpcd5 neofetch sudo chrony
-# optional for zram
-apt-get install zram-config
-systemctl enable zram-config
-# Create base config files
-mkdir -p /etc/network
-cat >>/etc/network/interfaces <<EOF
-auto lo
-iface lo inet loopback
-
-auto eth0
-iface eth0 inet dhcp
-EOF
-
-cat >/etc/resolv.conf <<EOF
-nameserver 1.1.1.1
-nameserver 8.8.8.8
-EOF
-
-# write text to fstab (this is with swap enabled if you want to disable it just put a # before the swap line)
-cat >/etc/fstab <<EOF
-# <file system> <mount pt> <type> <options> <dump> <pass>
-/dev/root /  ext2 rw,noauto 0 1
-proc  /proc  proc defaults 0 0
-devpts  /dev/pts devpts defaults,gid=5,mode=620,ptmxmode=0666 0 0
-tmpfs  /dev/shm tmpfs mode=0777 0 0
-tmpfs  /tmp  tmpfs mode=1777 0 0
-tmpfs  /run  tmpfs mode=0755,nosuid,nodev,size=64M 0 0
-sysfs  /sys  sysfs defaults 0 0
-/dev/mmcblk0p3  none            swap    sw              0       0
-EOF
-# set hostname
-echo "milkvduo-ubuntu" > /etc/hostname
-# set root passwd
-echo "root:riscv" | chpasswd
-# enable root login through ssh
-sed -i "s/#PermitRootLogin.*/PermitRootLogin yes/g" /etc/ssh/sshd_config
-# exit chroot
-exit
-sudo tar -cSf Ubuntu-jammy-rootfs.tar -C temp-rootfs .
-gzip Ubuntu-jammy-rootfs.tar
-rm -rf temp-rootfs
-
-```
-
-## Flashing
-
-next up, we flash the image on the sd card like so:
-
-```bash
-dd if=milkv-duo.img of=/dev/sdX status=progress #replace X with your device name
-```
-
-we mount the rootfs partition and we delete all the files inside with ```bash sudo rm -r /media/yourusername/rootfs```
-then create a directory ```mkdir ubunturootfs``` to extract our ```Ubuntu-jammy-rootfs.tar``` and run
-
-```bash
-tar -xf Ubuntu-jammy-rootfs.tar -C ubunturootfs
-```
-
-now we copy the rootfs to our mounted partition:
-
-```bash
-sudo cp -r ubunturootfs/* /media/yournamehere/rootfs/
-```
-
-and that's all! you should now be able to boot into ubuntu no problem
