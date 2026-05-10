@@ -1,3 +1,9 @@
+milkv-wireless-duos (2.0.1) noble; urgency=medium
+
+  * Fix DHCP defaults for current version, fix config paths
+
+ -- Julie Hill <queenkjuul@pm.me>  Sat, 09 May 2026 23:04:39 +0000
+
 milkv-wireless-duos (2.0.0) noble; urgency=medium
 
   * Verified refactor, rerelease with updated dependency

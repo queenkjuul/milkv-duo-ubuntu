@@ -1,3 +1,4 @@
 usr/bin/* usr/bin/
+lib/systemd/network/75-wlan0.network lib/systemd/network/
 lib/systemd/system/milkv-wireless.service lib/systemd/system/
 usr/share/man/man1/milkv-wireless-init.1 usr/share/man/man1/
