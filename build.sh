@@ -106,4 +106,4 @@ dd if=/dev/zero of=images/swap.img bs=1M count=256
 mkswap images/swap.img
 fakeroot genimage --rootpath ./rootfs --config ./genimage.cfg --inputpath ./images
 mv images/ubuntu-milkv.img images/ubuntu-$RELEASE-milkv-$BOARD.img
-echo "SD card image generated at ./images/ubuntu-milkv-$RELEASE-$BOARD.img"
+echo "SD card image generated at ./images/ubuntu-$RELEASE-milkv-$BOARD.img"
