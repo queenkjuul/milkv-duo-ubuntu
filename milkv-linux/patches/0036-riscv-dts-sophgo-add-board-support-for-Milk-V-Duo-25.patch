@@ -1,4 +1,4 @@
-From 3b28cea2dacc29740cc7c1eec0b2570ccc288ea4 Mon Sep 17 00:00:00 2001
+From 71e85fad96ebdab0afc02374b0216186a6bd1dfe Mon Sep 17 00:00:00 2001
 From: queenkjuul <queenkjuul@pm.me>
 Date: Fri, 24 Apr 2026 20:32:54 +0000
 Subject: [PATCH 36/37] riscv: dts: sophgo: add board support for Milk-V Duo

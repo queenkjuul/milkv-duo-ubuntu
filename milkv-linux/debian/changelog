@@ -1,3 +1,15 @@
+milkv-linux (7.0.0+qkj11~duo256m) noble; urgency=medium
+
+  * Update Duo 256M with qkj11 config
+
+ -- Julie Hill <queenkjuul@pm.me>  Mon, 11 May 2026 05:27:04 +0000
+
+milkv-linux (7.0.0+qkj11~duos) noble; urgency=medium
+
+  * Update Duo S with qkj10 config, fix Duo S remoteproc node
+
+ -- Julie Hill <queenkjuul@pm.me>  Sat, 09 May 2026 08:07:09 +0000
+
 milkv-linux (7.0.0+qkj10~duo256m) noble; urgency=medium
 
   * kconfig optimizations, enable zstd firmware for Ubuntu

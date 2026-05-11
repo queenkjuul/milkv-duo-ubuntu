@@ -1,4 +1,4 @@
-From 58b83b9a41bf1de783ca23dda71dd2d101622797 Mon Sep 17 00:00:00 2001
+From 3e112e5f631ad1b9ffa57091ceacc6eee32f928a Mon Sep 17 00:00:00 2001
 From: queenkjuul <queenkjuul@pm.me>
 Date: Sat, 25 Apr 2026 22:32:55 +0000
 Subject: [PATCH 37/37] drivers: remoteproc: fix C906L probe function
