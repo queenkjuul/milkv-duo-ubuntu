@@ -6,9 +6,10 @@ on:
       board:
         description: 'Board to target'
         type: choice
-        default: 'duos'
+        default: 'duos-wifi'
         options:
         - 'duos'
+        - 'duos-wifi'
         - 'duo256m'
       compile:
         description: 'Compile from source'

@@ -2,6 +2,7 @@
 
 BOARD=$1
 HNAME=$2
+WIRELESS=$3
 
 [ -z $BOARD ] && { echo "No board!"; exit 1; }
 [ -z $HNAME ] && { echo "No hostname!"; exit 1; }
@@ -13,12 +14,12 @@ PACKAGES="util-linux haveged openssh-server systemd kmod \
   milkv-dt-overlays milkv-arduino \
   linux-image-milkv-$BOARD milkv-usb-$BOARD milkv-pinmux-$BOARD"
 # Board-specific
-DUOS_PACKAGES="aic8800-milkv-firmware aic8800-milkv-modules-$BOARD milkv-wireless-$BOARD"
+WIRELESS_PACKAGES="aic8800-milkv-firmware aic8800-milkv-modules-$BOARD milkv-wireless-$BOARD"
 # User - season to taste
 USER_PACKAGES="nano git python-is-python3 impala bluetui sacad devmem2"
 
-if [ "$BOARD" = "duos" ]; then
-  PACKAGES="$PACKAGES $DUOS_PACKAGES"
+if [ "$WIRELESS" = "true" ]; then
+  PACKAGES="$PACKAGES $WIRELESS_PACKAGES"
 fi
 
 mv /queenkjuul-ubuntu-milkv.gpg /etc/apt/trusted.gpg.d/queenkjuul-ubuntu-milkv-$BOARD.gpg

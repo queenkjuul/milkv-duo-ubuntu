@@ -20,7 +20,7 @@ build.sh - create an Ubuntu image for Milk-V Duo boards
 
     -h | --help     show this help
     -c | --custom   prompt for settings
-    BOARD           must be duos or duo256m
+    BOARD           one of duos, duos-wifi, duo256m
                     must be only argument
 
 default hostname is "$DEFAULT_HNAME" and default root password is "$DEFAULT_PASSWORD"
@@ -34,7 +34,7 @@ if [ ! "$FLAG" = "--custom" ] && [ ! "$FLAG" = "-c" ]; then
     BOARD=$1
     echo "BOARD=$BOARD"
 else
-    while [ ! "$BOARD" = "duos" ] && [ ! "$BOARD" = "duo256m" ]; do
+    while [ ! "$BOARD" = "duos" ] && [ ! "$BOARD" = "duos-wifi" ] && [ ! "$BOARD" = "duo256m" ]; do
         read -rp "target board (required, must be duos or duo256m): " BOARD
     done
     [ -z "$HNAME" ] && read -rp "hostname (optional, default: $DEFAULT_HNAME): " HNAME
@@ -54,7 +54,6 @@ else
 fi
 
 PASSWORD=$(echo -n "$PASSWORD" | openssl passwd -6 -stdin)
-PPA_URL=https://ppa.launchpadcontent.net/queenkjuul/milkv-$BOARD/ubuntu
 [ "$OVERDRIVE" = ".od" ] && DISPLAY_OD="Enabled (1050MHz)" || DISPLAY_OD="Disabled (850MHz)"
 
 cat <<EOF
@@ -70,7 +69,13 @@ Selected Configuration:
 ======================================
 EOF
 
+if [ "$BOARD" = "duos-wifi" ]; then
+    WIRELESS="true"
+    BOARD="duos"
+fi
+
 echo "Running mmdebstrap"
+PPA_URL=https://ppa.launchpadcontent.net/queenkjuul/milkv-$BOARD/ubuntu
 rm -rf rootfs
 mkdir -p rootfs
 mkdir -p images
@@ -83,7 +88,7 @@ mmdebstrap --arch=riscv64 \
             --setup-hook="copy-in ./queenkjuul-ubuntu-milkv.gpg /" \
             --setup-hook="copy-in ./scripts/second-stage.sh /" \
             --setup-hook="copy-in ./scripts/first-boot.sh /" \
-            --customize-hook='chroot "$1" /bin/bash -e /second-stage.sh '$BOARD' '$HNAME \
+            --customize-hook='chroot "$1" /bin/bash -e /second-stage.sh '$BOARD' '$HNAME' '$WIRELESS \
             $RELEASE rootfs \
             "deb $PKG_URL $RELEASE $PKG_STE" \
             "deb $PKG_URL $RELEASE-backports $PKG_STE" \
@@ -102,6 +107,7 @@ echo "Setting root password"
 sed -i "s|^root:[^:]*:|root:$PASSWORD:|" ./rootfs/etc/shadow
 
 echo "Generating SD Card Image..."
+[ -n "$WIRELESS" ] && BOARD="duos-wifi"
 dd if=/dev/zero of=images/swap.img bs=1M count=256
 mkswap images/swap.img
 fakeroot genimage --rootpath ./rootfs --config ./genimage.cfg --inputpath ./images

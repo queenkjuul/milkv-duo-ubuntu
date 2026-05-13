@@ -45,6 +45,7 @@ jobs:
             [ "${{ inputs.compile }}" = "true" ] && ./scripts/compile.sh
             ./build.sh duo256m
             ./build.sh duos
+            ./build.sh duos-wifi
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
@@ -53,6 +54,7 @@ jobs:
           files: |
             images/ubuntu-noble-milkv-duo256m.img
             images/ubuntu-noble-milkv-duos.img
+            images/ubuntu-noble-milkv-duos-wifi.img
           prerelease: ${{ inputs.is_prerelease }}
           name: "Ubuntu 24.04 for Milk-V Duo Series: ${{ inputs.tag_name || github.ref_name }}"
           generate_release_notes: true
