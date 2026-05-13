@@ -56,7 +56,7 @@ jobs:
             images/ubuntu-noble-milkv-duos.img
             images/ubuntu-noble-milkv-duos-wifi.img
           prerelease: ${{ inputs.is_prerelease }}
-          name: "Ubuntu 24.04 for Milk-V Duo Series: ${{ inputs.tag_name || github.ref_name }}"
+          name: "${{ inputs.tag_name || github.ref_name }}"
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
