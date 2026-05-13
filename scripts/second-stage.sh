@@ -14,9 +14,9 @@ PACKAGES="util-linux haveged openssh-server systemd kmod \
   milkv-dt-overlays milkv-arduino \
   linux-image-milkv-$BOARD milkv-usb-$BOARD milkv-pinmux-$BOARD"
 # Board-specific
-WIRELESS_PACKAGES="aic8800-milkv-firmware aic8800-milkv-modules-$BOARD milkv-wireless-$BOARD"
+WIRELESS_PACKAGES="aic8800-milkv-firmware aic8800-milkv-modules-$BOARD milkv-wireless-$BOARD impala bluetui"
 # User - season to taste
-USER_PACKAGES="nano git python-is-python3 impala bluetui sacad devmem2"
+USER_PACKAGES="nano git python-is-python3 gpiod devmem2"
 
 if [ "$WIRELESS" = "true" ]; then
   PACKAGES="$PACKAGES $WIRELESS_PACKAGES"
