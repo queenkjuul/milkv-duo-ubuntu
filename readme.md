@@ -149,7 +149,7 @@ See [The Wiki](https://github.com/queenkjuul/milkv-duo-ubuntu/wiki/USB) for addi
 
 #### Additional Information
 
-See [the wiki](https://github.com/queenkjuul/milkv-duo-ubuntu/wiki/Pin-Configuration) for more information on setting pin configuration.
+See [the wiki](https://github.com/queenkjuul/milkv-duo-ubuntu/wiki/Pin-Configuration) for instructions on setting pinmux via device tree overlay and other information on setting pin configuration.
 
 ### WiFi + BT
 
