@@ -33,7 +33,7 @@ I am a software engineer, with extensive Linux experience, but I am new to the w
     - [Default Password](#default-password)
     - [First Boot](#first-boot)
     - [USB](#usb)
-    - [Additional Information](#additional-information)
+      - [Additional Information](#additional-information)
     - [Pin Configuration](#pin-configuration)
       - [`duo-pinmux` CLI tool from Milk-V](#duo-pinmux-cli-tool-from-milk-v)
       - [Additional Information](#additional-information-1)
