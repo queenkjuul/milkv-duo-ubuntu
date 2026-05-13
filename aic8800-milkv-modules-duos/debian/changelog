@@ -1,3 +1,27 @@
+aic8800-milkv-modules-duos (1.1.1+7.0.6+qkj1) noble; urgency=medium
+
+  * Rebuild against 7.0.6-qkj1
+
+ -- Julie Hill <queenkjuul@pm.me>  Wed, 13 May 2026 01:52:36 +0000
+
+aic8800-milkv-modules-duos (1.1.1+7.0.0+qkj11) noble; urgency=medium
+
+  * Resubmit for Launchpad error
+
+ -- Julie Hill <queenkjuul@pm.me>  Mon, 11 May 2026 15:42:39 +0000
+
+aic8800-milkv-modules-duos (1.1.0+7.0.0+qkj11) noble; urgency=medium
+
+  * Rebuild for qkj11 kernel
+
+ -- Julie Hill <queenkjuul@pm.me>  Mon, 11 May 2026 13:03:50 +0000
+
+aic8800-milkv-modules-duos (1.1.0+7.0.0+qkj10) noble; urgency=medium
+
+  * Rebuild for qkj10 kernel
+
+ -- Julie Hill <queenkjuul@pm.me>  Sat, 09 May 2026 09:45:13 +0000
+
 aic8800-milkv-modules-duos (1.1.0+7.0.0+qkj4) noble; urgency=medium
 
   * Sync with kernel updates
