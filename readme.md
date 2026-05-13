@@ -137,7 +137,7 @@ You can switch to Host Mode (USB-A) with:
 
 `milkv-usb-mode host` and then reboot. There are systemd services that handle the initialization. If you disable those, use `milkv-usb-init` to set things up after boot.
 
-### Additional Information
+#### Additional Information
 
 See [The Wiki](https://github.com/queenkjuul/milkv-duo-ubuntu/wiki/USB) for additional iformation on USB.
 
@@ -202,7 +202,7 @@ Be sure to see [the wiki](https://github.com/queenkjuul/milkv-duo-ubuntu/wiki/Ar
 | Feature | Duo 256M            | Duo S               |
 | ------- | ------------------- | ------------------- |
 | GPIO    | Works! :sunglasses: | Works! :sunglasses: |
-| UART    | Known Broken :sob:  | Untested            |
+| UART    | Known Broken :sob:  | Known Broken :sob:  |
 | I2C     | Untested            | Untested (I2C4 only)|
 | SPI     | Untested            | Unsupported         |
 | PWM     | Untested            | Works! :sunglasses: |
