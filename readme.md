@@ -203,7 +203,7 @@ Be sure to see [the wiki](https://github.com/queenkjuul/milkv-duo-ubuntu/wiki/Ar
 | ------- | ------------------- | ------------------- |
 | GPIO    | Works! :sunglasses: | Works! :sunglasses: |
 | UART    | Known Broken :sob:  | Known Broken :sob:  |
-| I2C     | Untested            | Untested (I2C4 only)|
+| I2C     | Untested            | Works! (I2C4 only) 😎|
 | SPI     | Untested            | Unsupported         |
 | PWM     | Untested            | Works! :sunglasses: |
 | ADC     | Untested            | Unsupported         |
